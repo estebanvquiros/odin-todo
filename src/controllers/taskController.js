@@ -1,5 +1,5 @@
 import Task from "../models/Task";
-import {addTask} from "../services/stateManager";
+import {addTask, removeTask} from "../services/stateManager";
 
 function createTask(title, description, dueDate, priority, projectId, id) {
 	const task = new Task(title, description, dueDate, priority, projectId, id);
@@ -7,4 +7,8 @@ function createTask(title, description, dueDate, priority, projectId, id) {
 	return task;
 }
 
-export { createTask };
+function deleteTask(id) {
+	removeTask(id);
+}
+
+export { createTask, deleteTask };

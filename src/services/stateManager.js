@@ -46,4 +46,27 @@ function addTask(task) {
 	publish("state-change", JSON.stringify(state));
 }
 
-export { addProject, addTask, hydrateState };
+function removeTask(id) {
+
+	if(!(id in state.tasks)) return;
+
+	const task = state.tasks[id];
+	removeTaskReferenceFromProject(task.projectId, id);
+
+	delete state.tasks[id];
+	publish("state-change", JSON.stringify(state));
+}
+
+function removeTaskReferenceFromProject(projectId, taskId) {
+
+	if (!(projectId in state.projects)) return;
+
+	const project = state.projects[projectId];
+
+	const taskPosition = project.tasks.indexOf(taskId);
+
+	if (taskPosition === -1) return;
+	project.tasks.splice(taskPosition, 1);
+}
+
+export { addProject, removeProject, addTask, removeTask, hydrateState };
