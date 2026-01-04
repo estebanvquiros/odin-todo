@@ -23,7 +23,7 @@ function hydrateState(data) {
 
 function hydrateProjects(projects) {
 	Object.values(projects).forEach(project => {
-		const newProject = new Project(project.name, project.id);
+		const newProject = new Project(project.name, project.id, project.tasks);
 		state.projects[newProject.id] = newProject;
 	});
 }
@@ -42,6 +42,7 @@ function addProject(project) {
 
 function addTask(task) {
 	state.tasks[task.id] = task;
+	state.projects[task.projectId].tasks.push(task.id);
 	publish("state-change", JSON.stringify(state));
 }
 
