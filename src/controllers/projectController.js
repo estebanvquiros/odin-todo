@@ -1,5 +1,5 @@
 import Project from "../models/Project";
-import {addProject} from "../services/stateManager";
+import {addProject, removeProject} from "../services/stateManager";
 
 function createProject(name, id) {
 	const project = new Project(name, id);
@@ -7,4 +7,8 @@ function createProject(name, id) {
 	return project;
 }
 
-export { createProject };
+function deleteProject(id) {
+	removeProject(id);
+}
+
+export { createProject, deleteProject };

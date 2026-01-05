@@ -40,6 +40,23 @@ function addProject(project) {
 	publish("state-change", JSON.stringify(state));
 }
 
+function removeProject(id) {
+
+	if (!(id in state.projects)) return;
+
+	const project = state.projects[id];
+
+	project.tasks.forEach(taskId => {
+		if (taskId in state.tasks) {
+			delete state.tasks[taskId];
+		}
+	});
+
+	delete state.projects[id];
+
+	publish("state-change", JSON.stringify(state));
+}
+
 function addTask(task) {
 	state.tasks[task.id] = task;
 	state.projects[task.projectId].tasks.push(task.id);
