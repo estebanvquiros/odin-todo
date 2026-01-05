@@ -58,6 +58,7 @@ function removeProject(id) {
 }
 
 function addTask(task) {
+	if (!(task.projectId in state.projects)) return;
 	state.tasks[task.id] = task;
 	state.projects[task.projectId].tasks.push(task.id);
 	publish("state-change", JSON.stringify(state));
