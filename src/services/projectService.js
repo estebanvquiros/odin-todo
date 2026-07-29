@@ -7,4 +7,8 @@ function createProject(name) {
   projects[projectID] = new Project(projectID, name);
 }
 
-export { createProject }
+function getProjects() {
+  return Object.values(projects);
+}
+
+export { createProject, getProjects }
