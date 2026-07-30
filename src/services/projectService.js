@@ -13,4 +13,9 @@ function getProjects() {
   return Object.values(projects);
 }
 
-export { createProject, getProjects }
+function deleteProject(id) {
+  delete projects[id];
+  writeProjects(projects);
+}
+
+export { createProject, getProjects, deleteProject }
