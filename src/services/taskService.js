@@ -31,4 +31,11 @@ function deleteProjectTasks(projectID) {
   writeTasks(tasks);
 }
 
-export { createTask, getTasks, deleteTask, deleteProjectTasks }
+function updateTask(id, title, description, dueDate, priority, projectID) {
+  if (Object.hasOwn(tasks, id)) {
+    tasks[id] = new Task(id, title, description, dueDate, priority, projectID);
+  }
+  writeTasks(tasks);
+}
+
+export { createTask, getTasks, deleteTask, deleteProjectTasks, updateTask }

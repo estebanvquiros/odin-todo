@@ -18,4 +18,11 @@ function deleteProject(id) {
   writeProjects(projects);
 }
 
-export { createProject, getProjects, deleteProject }
+function updateProject(id, name) {
+  if (Object.hasOwn(projects, id)) {
+    projects[id] = new Project(id, name);
+  }
+  writeProjects(projects);
+}
+
+export { createProject, getProjects, deleteProject, updateProject }
