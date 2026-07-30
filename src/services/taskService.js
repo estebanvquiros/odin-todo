@@ -22,4 +22,13 @@ function deleteTask(id) {
   writeTasks(tasks);
 }
 
-export { createTask, getTasks, deleteTask }
+function deleteProjectTasks(projectID) {
+  Object.keys(tasks).forEach((id) => {
+    if (tasks[id].projectID === projectID) {
+      delete tasks[id];
+    }
+  });
+  writeTasks(tasks);
+}
+
+export { createTask, getTasks, deleteTask, deleteProjectTasks }
