@@ -9,4 +9,12 @@ function createTask(title, description, dueDate, priority, projectID) {
   writeTasks(tasks);
 }
 
-export { createTask }
+function getTasks(projectID = null) {
+  if (projectID) {
+    return Object.values(tasks).filter((task) => task.projectID === projectID);
+  } else {
+    return Object.values(tasks);
+  }
+}
+
+export { createTask, getTasks }
