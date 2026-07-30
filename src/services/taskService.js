@@ -17,4 +17,9 @@ function getTasks(projectID = null) {
   }
 }
 
-export { createTask, getTasks }
+function deleteTask(id) {
+  delete tasks[id];
+  writeTasks(tasks);
+}
+
+export { createTask, getTasks, deleteTask }
