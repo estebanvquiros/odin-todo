@@ -1,10 +1,12 @@
+import { readProjects, writeProjects } from "../dao/projectDAO";
 import Project from "../models/Project";
 
-const projects = {};
+const projects = readProjects();
 
 function createProject(name) {
   const projectID = crypto.randomUUID();
   projects[projectID] = new Project(projectID, name);
+  writeProjects(projects);
 }
 
 function getProjects() {
