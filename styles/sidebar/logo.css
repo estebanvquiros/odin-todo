@@ -1,0 +1,18 @@
+#logo {
+  display: flex;
+  gap: var(--size-2);
+  align-items: center;
+  padding: var(--size-4) var(--size-3);
+}
+
+#logo > svg {
+  width: var(--size-7);
+  fill: var(--indigo-8);
+}
+
+#logo > h1 {
+  font-size: var(--font-size-3);
+  letter-spacing: var(--font-letterspacing-2);
+  font-weight: var(--font-weight-6);
+  color: var(--gray-8);
+}

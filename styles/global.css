@@ -1,0 +1,20 @@
+@import "open-props/colors";
+@import "open-props/sizes";
+@import "open-props/fonts";
+
+body {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#app {
+  height: 100vh;
+  display: flex;
+}
+
+#main-content {
+  background-color: var(--gray-0);
+  flex: 4;
+}

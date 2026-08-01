@@ -1,0 +1,45 @@
+#sidebar {
+  background-color: var(--gray-2);
+  padding: var(--size-2);
+  display: flex;
+  flex-direction: column;
+  width: var(--size-fluid-9);
+}
+
+.sidebar-label, 
+.sidebar-item {
+  padding: var(--size-2) var(--size-4);
+}
+
+.sidebar-label {
+  text-transform: uppercase;
+  font-weight: var(--font-weight-8);
+  font-size: var(--font-size-0);
+  color: var(--gray-7);
+}
+
+.sidebar-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-item {
+  border-radius: var(--size-2);
+  display: flex;
+  align-items: center;
+  gap: var(--size-2);
+}
+
+.sidebar-item > span > svg {
+  width: var(--size-3);
+  fill: var(--gray-7);
+}
+
+.sidebar-item > p {
+  font-size: var(--font-size-1);
+  color: var(--gray-7);
+}
+
+.sidebar-item:hover {
+  background-color: var(--indigo-2);
+}
