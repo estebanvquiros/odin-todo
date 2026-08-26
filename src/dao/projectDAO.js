@@ -8,10 +8,17 @@ function writeProjects(projects) {
 }
 
 function readProjects() {
-  const projects = read(STORAGE_KEY);
-  if (!projects) return {};
+  const rawProjects = read(STORAGE_KEY);
+  
+  if (!rawProjects || Object.keys(rawProjects).length === 0) {
+    const defaultProject = new Project(crypto.randomUUID(), "Index");
+    const projects = {[defaultProject.id]: defaultProject}
+    writeProjects(projects);
+    return projects; 
+  }
+
   return Object.fromEntries(
-    Object.values(projects).map((project) => [project.id, new Project(project.id, project.name)])
+    Object.values(rawProjects).map((project) => [project.id, new Project(project.id, project.name)])
   );
 }
 
