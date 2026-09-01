@@ -1,6 +1,7 @@
 @import "open-props/colors";
 @import "open-props/sizes";
 @import "open-props/fonts";
+@import "open-props/borders";
 
 body {
   font-family: "Inter", sans-serif;
@@ -17,4 +18,31 @@ body {
 #main-content {
   background-color: var(--gray-0);
   flex: 4;
+}
+
+.btn {
+  padding: var(--size-2) var(--size-3);
+  border: 0px;
+  border-radius: var(--radius-2);
+  font-weight: var(--font-weight-5);
+}
+
+input {
+  border: var(--border-size-2) solid var(--gray-4);
+  border-radius: var(--radius-2);
+  padding: var(--size-1)
+}
+
+input:focus {
+  border: var(--border-size-2) solid var(--blue-6);
+  outline: var(--border-size-2) solid var(--blue-6);
+}
+
+.confirm-btn {
+  background-color: var(--indigo-6);
+  color: var(--gray-0);
+}
+
+.cancel-btn {
+  background-color: var(--gray-3);
 }
