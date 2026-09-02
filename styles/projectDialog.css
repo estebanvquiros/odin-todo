@@ -1,0 +1,34 @@
+#project-dialog {
+  width: var(--size-fluid-9);
+  padding: var(--size-3);
+  border-radius: var(--radius-3);
+}
+
+#project-dialog > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4);
+}
+
+#project-dialog h1 {
+  text-align: center;
+  font-size: var(--font-size-3);
+}
+
+#project-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#project-form > label {
+  text-transform: uppercase;
+  font-size: var(--font-size-0);
+  font-weight: var(--font-weight-5);
+  letter-spacing: var(--font-letterspacing-2);
+}
+
+#dialog-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+}
