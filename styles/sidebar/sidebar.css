@@ -6,7 +6,7 @@
   width: var(--size-fluid-9);
 }
 
-.sidebar-label, 
+.sidebar-label,
 .sidebar-item {
   padding: var(--size-2) var(--size-4);
 }
@@ -30,16 +30,34 @@
   gap: var(--size-2);
 }
 
-.sidebar-item > span > svg {
+.sidebar-item>span>svg {
   width: var(--size-3);
   fill: var(--gray-7);
 }
 
-.sidebar-item > p {
+.sidebar-item>p {
   font-size: var(--font-size-1);
   color: var(--gray-7);
 }
 
+.sidebar-item * {
+  pointer-events: none;
+  user-select: none;
+}
+
 .sidebar-item:hover {
   background-color: var(--indigo-2);
+}
+
+.project.active {
+  background-color: var(--indigo-6);
+  color: var(--gray-0);
+}
+
+.project.active>p {
+  color: var(--gray-0);
+}
+
+.project.active svg {
+  fill: var(--gray-0);
 }

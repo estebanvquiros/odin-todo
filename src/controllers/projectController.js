@@ -2,13 +2,13 @@ import { createProject, getProjects } from "../services/projectService";
 import { createProjectItem } from "../views/projectView";
 
 const projectsContainer = document.querySelector("#projects");
-
 const newProjectButton = document.querySelector("#new-project-btn");
 const projectDialog = document.querySelector("#project-dialog");
 const projectForm = document.querySelector("#project-form");
 const projectNameInput = document.querySelector("#project-name-input");
 const projectCancelBtn = document.querySelector("#project-cancel-btn");
 
+projectsContainer.addEventListener("click", selectProject);
 newProjectButton.addEventListener("click", openProjectDialog);
 projectForm.addEventListener("submit", addProject);
 projectCancelBtn.addEventListener("click", closeProjectDialog);
@@ -28,6 +28,20 @@ function openProjectDialog() {
 function closeProjectDialog() {
   projectNameInput.value = "";
   projectDialog.close();
+}
+
+function selectProject(e) {
+  const selection = e.target;
+  if (!selection.classList.contains("project")) return;
+  highlightSelectedProject(selection);
+}
+
+function highlightSelectedProject(selectedProject) {
+  const currentActiveProject = document.querySelector(".project.active");
+  if (currentActiveProject) {
+    currentActiveProject.classList.remove("active");
+  }
+  selectedProject.classList.add("active");
 }
 
 function loadProjects() {
