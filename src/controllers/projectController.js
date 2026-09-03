@@ -15,8 +15,9 @@ projectCancelBtn.addEventListener("click", closeProjectDialog);
 
 function addProject(e) {
   e.preventDefault();
-  createProject(projectNameInput.value);
-  loadProjects();
+  const newProject = createProject(projectNameInput.value);
+  const newProjectElement = createProjectItem(newProject);
+  projectsContainer.appendChild(newProjectElement);
   closeProjectDialog();
 }
 

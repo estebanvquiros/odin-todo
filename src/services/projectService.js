@@ -4,9 +4,10 @@ import Project from "../models/Project";
 const projects = readProjects();
 
 function createProject(name) {
-  const projectID = crypto.randomUUID();
-  projects[projectID] = new Project(projectID, name);
+  const newProject = new Project(crypto.randomUUID(), name);
+  projects[newProject.id] = newProject;
   writeProjects(projects);
+  return newProject;
 }
 
 function getProjects() {
