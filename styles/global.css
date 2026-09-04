@@ -27,7 +27,7 @@ body {
   font-weight: var(--font-weight-5);
 }
 
-input,
+input[type="text"],
 textarea,
 select {
   border: var(--border-size-2) solid var(--gray-4);
@@ -35,7 +35,7 @@ select {
   padding: var(--size-1)
 }
 
-input:focus,
+input[type="text"]:focus,
 textarea:focus,
 select:focus {
   border: var(--border-size-2) solid var(--blue-6);
