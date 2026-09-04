@@ -15,7 +15,7 @@ body {
   display: flex;
 }
 
-#main-content {
+#main {
   background-color: var(--gray-0);
   flex: 4;
 }
@@ -27,15 +27,23 @@ body {
   font-weight: var(--font-weight-5);
 }
 
-input {
+input,
+textarea,
+select {
   border: var(--border-size-2) solid var(--gray-4);
   border-radius: var(--radius-2);
   padding: var(--size-1)
 }
 
-input:focus {
+input:focus,
+textarea:focus,
+select:focus {
   border: var(--border-size-2) solid var(--blue-6);
   outline: var(--border-size-2) solid var(--blue-6);
+}
+
+textarea {
+  resize: none;
 }
 
 .confirm-btn {

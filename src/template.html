@@ -26,12 +26,32 @@
       <ul class="sidebar-list" id="projects"></ul>
       <div class="sidebar-item" id="new-project-btn">
         <span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>plus</title><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <title>plus</title>
+            <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+          </svg>
         </span>
         <p>Add project</p>
       </div>
     </div>
-    <div id="main-content">
+    <div id="main">
+      <div id="content">
+        <div id="header">
+          <h1 id="selected-project">Project</h1>
+        </div>
+        <div id="divider"></div>
+        <ul id="tasks">
+        </ul>
+        <div id="new-task-btn">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>plus</title>
+              <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+            </svg>
+          </span>
+          <p>Add new task</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -40,12 +60,46 @@
     <div>
       <h1>New Project</h1>
       <form id="project-form">
-        <label for="project-name-input">Project name:</label>
-        <input type="text" id="project-name-input" required>
+        <div>
+          <label for="project-name-input">Project name:</label>
+          <input type="text" id="project-name-input" required>
+        </div>
       </form>
       <div id="dialog-buttons">
         <button type="submit" form="project-form" class="btn confirm-btn">Create project</button>
         <button id="project-cancel-btn" class="btn cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="task-dialog">
+    <div>
+      <h1>New Task</h1>
+      <form id="task-form">
+        <div>
+          <label for="task-title-input">Title:</label>
+          <input type="text" id="task-title-input" required>
+        </div>
+        <div>
+          <label for="task-description-input">Description:</label>
+          <textarea id="task-description-input" rows="5"></textarea>
+        </div>
+        <div>
+          <label for="task-date-input">Due date:</label>
+          <input type="date" id="task-date-input" required>
+        </div>
+        <div>
+          <label for="task-priority-input">Priority</label>
+          <select id="task-priority-input">
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low" selected>Low</option>
+          </select>
+        </div>
+      </form>
+      <div id="dialog-buttons">
+        <button type="submit" form="task-form" class="btn confirm-btn">Create task</button>
+        <button id="task-cancel-btn" class="btn cancel-btn">Cancel</button>
       </div>
     </div>
   </dialog>

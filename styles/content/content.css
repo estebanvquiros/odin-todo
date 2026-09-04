@@ -1,0 +1,36 @@
+#main {
+  padding-top: var(--size-8);
+  display: flex;
+  justify-content: center;
+}
+
+#content {
+  /* background-color: cornflowerblue; */
+  width: var(--size-content-3);
+}
+
+#divider {
+  height: var(--size-1);
+  background-color: var(--gray-3);
+}
+
+#new-task-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--size-2);
+  padding: var(--size-3);
+}
+
+#new-task-btn>p {
+  font-size: var(--font-size-1);
+  color: var(--gray-7);
+}
+
+#new-task-btn>span>svg {
+  width: var(--size-5);
+  fill: var(--gray-7);
+}
+
+#new-task-btn:hover {
+  background-color: var(--gray-3);
+}
