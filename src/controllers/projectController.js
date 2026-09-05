@@ -1,6 +1,10 @@
-import { createProject, getProjects } from "../services/projectService";
+import { createProject, getProjectName, getProjects } from "../services/projectService";
 import { createProjectItem } from "../views/projectView";
+import { loadTasks } from "./taskController";
 
+let activeProjectId = "";
+
+const activeProjectName = document.querySelector("#active-project-name");
 const projectsContainer = document.querySelector("#projects");
 const newProjectButton = document.querySelector("#new-project-btn");
 const projectDialog = document.querySelector("#project-dialog");
@@ -33,7 +37,15 @@ function closeProjectDialog() {
 function selectProject(e) {
   const selection = e.target;
   if (!selection.classList.contains("project")) return;
-  highlightSelectedProject(selection);
+  setActiveProject(selection);
+}
+
+function setActiveProject(projectElement) {
+  if (!projectElement) return;
+  activeProjectId = projectElement.dataset.projectId;
+  highlightSelectedProject(projectElement);
+  activeProjectName.textContent = getProjectName(activeProjectId);
+  loadTasks(activeProjectId);
 }
 
 function highlightSelectedProject(selectedProject) {
@@ -51,6 +63,15 @@ function loadProjects() {
     fragment.appendChild(createProjectItem(project));
   });
   projectsContainer.replaceChildren(fragment);
+
+  const firstProjectOfList = document.querySelector(".project");
+  if (firstProjectOfList) {
+    setActiveProject(firstProjectOfList);
+  }
 }
 
-export { loadProjects }
+function getActiveProjectId() {
+  return activeProjectId;
+}
+
+export { loadProjects, getActiveProjectId }

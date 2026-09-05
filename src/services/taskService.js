@@ -4,9 +4,10 @@ import Task from "../models/Task";
 const tasks = readTasks();
 
 function createTask(title, description, dueDate, priority, projectID) {
-  const taskID = crypto.randomUUID();
-  tasks[taskID] = new Task(taskID, title, description, dueDate, priority, projectID);
+  const newTask = new Task(crypto.randomUUID(), title, description, dueDate, priority, projectID);
+  tasks[newTask.id] = newTask;
   writeTasks(tasks);
+  return newTask;
 }
 
 function getTasks(projectID = null) {

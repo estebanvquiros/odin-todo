@@ -34,3 +34,8 @@
 #new-task-btn:hover {
   background-color: var(--gray-3);
 }
+
+#new-task-btn * {
+  pointer-events: none;
+  user-select: none;
+}

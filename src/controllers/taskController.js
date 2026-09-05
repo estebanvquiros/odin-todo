@@ -1,5 +1,8 @@
 import { createTask, getTasks } from "../services/taskService";
+import { createTaskElement } from "../views/taskView";
+import { getActiveProjectId } from "./projectController";
 
+const taskContainer = document.querySelector("#tasks")
 const newTaskBtn = document.querySelector("#new-task-btn");
 const taskDialog = document.querySelector("#task-dialog");
 const taskForm = document.querySelector("#task-form");
@@ -15,13 +18,15 @@ taskCancelBtn.addEventListener("click", closeTaskDialog);
 
 function addTask(e) {
   e.preventDefault();
-  createTask(
+  const newTask = createTask(
     taskTitleInput.value,
     taskDescriptionInput.value,
     taskDateInput.value,
     taskPriorityInput.value,
-    0 // TODO: Create task of a selected project.
+    getActiveProjectId()
   );
+  const newTaskElement = createTaskElement(newTask);
+  taskContainer.appendChild(newTaskElement);
   closeTaskDialog();
 }
 
@@ -34,10 +39,13 @@ function closeTaskDialog() {
   taskDialog.close();
 }
 
-function loadTasks() {
-  // TODO: Load tasks of a project.
-  const tasks = getTasks();
-  console.log(tasks);
+function loadTasks(projectId) {
+  const tasks = getTasks(projectId);
+  const fragment = document.createDocumentFragment();
+  tasks.forEach((task) => {
+    fragment.appendChild(createTaskElement(task));
+  })
+  taskContainer.replaceChildren(fragment);
 }
 
 export { loadTasks }

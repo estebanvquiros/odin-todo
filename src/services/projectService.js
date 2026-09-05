@@ -26,4 +26,8 @@ function updateProject(id, name) {
   writeProjects(projects);
 }
 
-export { createProject, getProjects, deleteProject, updateProject }
+function getProjectName(id) {
+  return projects[id].name;
+}
+
+export { createProject, getProjects, deleteProject, updateProject, getProjectName }
