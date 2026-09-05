@@ -5,13 +5,12 @@
 }
 
 #content {
-  /* background-color: cornflowerblue; */
-  width: var(--size-content-3);
+  width: var(--size-md);
 }
 
-#divider {
-  height: var(--size-1);
-  background-color: var(--gray-3);
+#active-project-name {
+  border-bottom: var(--border-size-1) solid var(--gray-3);
+  padding-bottom: var(--size-1);
 }
 
 #new-task-btn {
@@ -31,8 +30,9 @@
   fill: var(--gray-7);
 }
 
-#new-task-btn:hover {
-  background-color: var(--gray-3);
+#new-task-btn:hover,
+.task:hover {
+  background-color: var(--gray-1);
 }
 
 #new-task-btn * {

@@ -8,7 +8,20 @@ function createTaskElement(task) {
   checkbox.classList.add("task-checkbox");
   checkbox.type = "checkbox";
   taskTitle.classList.add("task-title");
-  taskPriority.classList.add("task-priority");
+
+  switch (task.priority) {
+    case "High":
+      taskPriority.classList.add("task-priority", "high");
+      break;
+    case "Medium":
+      taskPriority.classList.add("task-priority", "medium");
+      break;
+    case "Low":
+      taskPriority.classList.add("task-priority", "low");
+      break;
+    default:
+      break;
+  }
 
   taskItem.dataset.taskId = task.id;
   taskTitle.textContent = task.title;
