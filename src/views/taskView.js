@@ -6,30 +6,18 @@ function createTaskElement(task) {
 
   taskItem.classList.add("task");
   checkbox.classList.add("task-checkbox");
-  checkbox.type = "checkbox";
   taskTitle.classList.add("task-title");
+  taskPriority.classList.add("task-priority", task.priority.toLowerCase());
 
-  switch (task.priority) {
-    case "High":
-      taskPriority.classList.add("task-priority", "high");
-      break;
-    case "Medium":
-      taskPriority.classList.add("task-priority", "medium");
-      break;
-    case "Low":
-      taskPriority.classList.add("task-priority", "low");
-      break;
-    default:
-      break;
+  if (task.completed === true) {
+    taskItem.classList.add("completed");
   }
 
+  checkbox.type = "checkbox";
+  checkbox.checked = Boolean(task.completed);
   taskItem.dataset.taskId = task.id;
   taskTitle.textContent = task.title;
   taskPriority.textContent = task.priority;
-
-  taskItem.appendChild(checkbox);
-  taskItem.appendChild(taskTitle);
-  taskItem.appendChild(taskPriority);
 
   if (task.dueDate) {
     const taskDueDate = document.createElement("p");
@@ -44,6 +32,10 @@ function createTaskElement(task) {
     taskDescription.textContent = task.description;
     taskItem.appendChild(taskDescription);
   }
+
+  taskItem.appendChild(checkbox);
+  taskItem.appendChild(taskTitle);
+  taskItem.appendChild(taskPriority);
 
   return taskItem;
 }

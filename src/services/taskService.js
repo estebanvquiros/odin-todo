@@ -4,7 +4,7 @@ import Task from "../models/Task";
 const tasks = readTasks();
 
 function createTask(title, description, dueDate, priority, projectID) {
-  const newTask = new Task(crypto.randomUUID(), title, description, dueDate, priority, projectID);
+  const newTask = new Task(crypto.randomUUID(), title, description, dueDate, priority, projectID, false);
   tasks[newTask.id] = newTask;
   writeTasks(tasks);
   return newTask;
@@ -39,4 +39,11 @@ function updateTask(id, title, description, dueDate, priority, projectID) {
   writeTasks(tasks);
 }
 
-export { createTask, getTasks, deleteTask, deleteProjectTasks, updateTask }
+function changeTaskStatus(id, status) {
+  if (tasks[id]) {
+    tasks[id].completed = status;
+  }
+  writeTasks(tasks);
+}
+
+export { createTask, getTasks, deleteTask, deleteProjectTasks, updateTask, changeTaskStatus }

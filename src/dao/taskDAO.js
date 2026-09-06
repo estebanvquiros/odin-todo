@@ -11,7 +11,7 @@ function readTasks() {
   const tasks = read(STORAGE_KEY);
   if (!tasks) return {};
   return Object.fromEntries(
-    Object.values(tasks).map((task) => [task.id, new Task(task.id, task.title, task.description, task.dueDate, task.priority, task.projectID)])
+    Object.values(tasks).map((task) => [task.id, new Task(task.id, task.title, task.description, task.dueDate, task.priority, task.projectID, task.completed)])
   );
 }
 

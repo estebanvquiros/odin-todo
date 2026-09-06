@@ -1,4 +1,4 @@
-import { createTask, getTasks } from "../services/taskService";
+import { changeTaskStatus, createTask, getTasks } from "../services/taskService";
 import { createTaskElement } from "../views/taskView";
 import { getActiveProjectId } from "./projectController";
 
@@ -15,6 +15,7 @@ const taskCancelBtn = document.querySelector("#task-cancel-btn");
 newTaskBtn.addEventListener("click", openTaskDialog);
 taskForm.addEventListener("submit", addTask);
 taskCancelBtn.addEventListener("click", closeTaskDialog);
+taskContainer.addEventListener("change", handleStatusChange);
 
 function addTask(e) {
   e.preventDefault();
@@ -28,6 +29,15 @@ function addTask(e) {
   const newTaskElement = createTaskElement(newTask);
   taskContainer.appendChild(newTaskElement);
   closeTaskDialog();
+}
+
+function handleStatusChange(e) {
+  if (!e.target.classList.contains("task-checkbox")) return;
+  const checkbox = e.target;
+  const taskElement = checkbox.closest(".task");
+  const taskId = taskElement.dataset.taskId;
+  changeTaskStatus(taskId, checkbox.checked);
+  taskElement.classList.toggle("completed", checkbox.checked);
 }
 
 function openTaskDialog() {

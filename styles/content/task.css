@@ -12,6 +12,7 @@
   width: var(--size-3);
   height: var(--size-3);
   margin-right: var(--size-3);
+  grid-area: 1 / 1;
 }
 
 .task-title {
@@ -22,7 +23,7 @@
 }
 
 .task-description {
-  grid-column: 2;
+  grid-area: 2 / 2;
   font-size: var(--font-size-1);
   color: var(--gray-6);
 }
@@ -61,4 +62,17 @@
 .task-priority.low {
   background-color: var(--green-1);
   color: var(--green-7);
+}
+
+.task.completed .task-title,
+.task.completed .task-description,
+.task.completed .task-priority,
+.task.completed .task-duedate {
+  text-decoration: line-through;
+  color: var(--gray-5);
+}
+
+.task.completed .task-priority,
+.task.completed .task-duedate {
+  background-color: var(--gray-3);
 }
