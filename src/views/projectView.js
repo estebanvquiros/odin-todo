@@ -1,3 +1,40 @@
+const projectList = document.querySelector("#project-list");
+const createProjectBtn = document.querySelector("#create-project-btn");
+
+const projectDialog = document.querySelector("#project-dialog");
+const projectDialogTitle = projectDialog.querySelector("#project-dialog-title");
+const projectForm = projectDialog.querySelector("#project-form");
+const projectNameInput = projectForm.querySelector("#project-name-input");
+const projectSubmitBtn = projectDialog.querySelector("#project-submit-btn");
+const projectCancelBtn = projectDialog.querySelector("#project-cancel-btn");
+
+function onAddProject() {
+  createProjectBtn.addEventListener("click", openCreateProjectDialog);
+}
+
+function onProjectSubmit(handler) {
+  projectForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const projectName = projectNameInput.value.trim();
+    if (!projectName) return;
+    handler(projectName);
+    closeProjectDialog();
+  });
+}
+
+function onCancelProject() {
+  projectCancelBtn.addEventListener("click", closeProjectDialog);
+}
+
+function onProjectSelection(handler) {
+  projectList.addEventListener("click", (e) => {
+    const project = e.target;
+    if (!project.classList.contains("project")) return;
+    highlightProject(project);
+    handler(project.dataset.projectId);
+  });
+}
+
 function createProjectItem(project) {
   const projectItem = document.createElement("li");
   const projectName = document.createElement("p");
@@ -14,4 +51,40 @@ function createProjectItem(project) {
   return projectItem;
 }
 
-export { createProjectItem }
+function renderProject(project) {
+  const projectItem = createProjectItem(project);
+  projectList.appendChild(projectItem);
+}
+
+function renderProjects(projects) {
+  const fragment = document.createDocumentFragment();
+  projects.forEach((project) => {
+    fragment.appendChild(createProjectItem(project));
+  });
+  projectList.replaceChildren(fragment);
+}
+
+function openCreateProjectDialog() {
+  setupCreateProjectDialog();
+  projectDialog.showModal();
+}
+
+function closeProjectDialog() {
+  projectForm.reset();
+  projectDialog.close();
+}
+
+function setupCreateProjectDialog() {
+  projectDialogTitle.textContent = "Create project";
+  projectSubmitBtn.textContent = "Create Project";
+}
+
+function highlightProject(projectItem) {
+  const previousSelected = projectList.querySelector(".active");
+  if (previousSelected) {
+    previousSelected.classList.remove("active");
+  }
+  projectItem.classList.add("active");
+}
+
+export { renderProjects, renderProject, onAddProject, onProjectSubmit, onCancelProject, onProjectSelection }

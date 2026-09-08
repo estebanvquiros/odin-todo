@@ -1,6 +1,5 @@
 import { changeTaskStatus, createTask, getTasks } from "../services/taskService";
 import { createTaskElement } from "../views/taskView";
-import { getActiveProjectId } from "./projectController";
 
 const taskContainer = document.querySelector("#tasks")
 const newTaskBtn = document.querySelector("#new-task-btn");
@@ -24,7 +23,6 @@ function addTask(e) {
     taskDescriptionInput.value,
     taskDateInput.value,
     taskPriorityInput.value,
-    getActiveProjectId()
   );
   const newTaskElement = createTaskElement(newTask);
   taskContainer.appendChild(newTaskElement);

@@ -30,4 +30,8 @@ function getProjectName(id) {
   return projects[id].name;
 }
 
-export { createProject, getProjects, deleteProject, updateProject, getProjectName }
+function getProjectById(id) {
+  return projects[id] || null;
+}
+
+export { createProject, getProjects, deleteProject, updateProject, getProjectName, getProjectById }

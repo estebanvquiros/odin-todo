@@ -5,6 +5,7 @@ import "../styles/sidebar/logo.css";
 import "../styles/dialog.css";
 import "../styles/content/content.css";
 import "../styles/content/task.css";
-import { loadProjects } from "./controllers/projectController";
+import { initProjectController, loadProjects } from "./controllers/projectController";
 
+initProjectController();
 loadProjects();
