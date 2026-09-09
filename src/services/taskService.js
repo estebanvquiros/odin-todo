@@ -39,9 +39,9 @@ function updateTask(id, title, description, dueDate, priority, projectID) {
   writeTasks(tasks);
 }
 
-function changeTaskStatus(id, status) {
+function changeTaskStatus(id, completed) {
   if (tasks[id]) {
-    tasks[id].completed = status;
+    tasks[id].completed = completed;
   }
   writeTasks(tasks);
 }

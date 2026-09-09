@@ -1,4 +1,55 @@
-function createTaskElement(task) {
+const taskList = document.querySelector("#task-list");
+const addTaskBtn = document.querySelector("#add-task-btn");
+
+const taskDialog = document.querySelector("#task-dialog");
+const taskForm = taskDialog.querySelector("#task-form");
+const taskTitleInput = taskForm.querySelector("#task-title-input");
+const taskDescriptionInput = taskForm.querySelector("#task-description-input");
+const taskDueDateInput = taskForm.querySelector("#task-date-input");
+const taskPriorityInput = taskForm.querySelector("#task-priority-input");
+const cancelTaskBtn = taskDialog.querySelector("#task-cancel-btn")
+
+function onAddTask() {
+  addTaskBtn.addEventListener("click", () => {
+    openTaskDialog();
+  });
+}
+
+function onTaskSubmit(handler) {
+  taskForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    handler(taskTitleInput.value.trim(), taskDescriptionInput.value.trim(), taskDueDateInput.value, taskPriorityInput.value);
+    closeTaskDialog();
+  })
+}
+
+function onCancelTask() {
+  cancelTaskBtn.addEventListener("click", () => {
+    closeTaskDialog();
+  });
+}
+
+function onTaskStatusChange(handler) {
+  taskList.addEventListener("change", (e) => {
+    const checkbox = e.target;
+    if (!checkbox.classList.contains("task-checkbox")) return;
+    const taskItem = checkbox.closest(".task");
+    if (!taskItem) return;
+    handler(taskItem.dataset.taskId, checkbox.checked);
+    taskItem.classList.toggle("completed", checkbox.checked);
+  });
+}
+
+function openTaskDialog() {
+  taskDialog.showModal();
+}
+
+function closeTaskDialog() {
+  taskForm.reset();
+  taskDialog.close();
+}
+
+function createTaskItem(task) {
   const taskItem = document.createElement("li");
   const checkbox = document.createElement("input");
   const taskTitle = document.createElement("h2");
@@ -40,4 +91,26 @@ function createTaskElement(task) {
   return taskItem;
 }
 
-export { createTaskElement }
+function renderTask(task) {
+  const taskItem = createTaskItem(task);
+  taskList.appendChild(taskItem);
+}
+
+function renderTasks(tasks) {
+  const fragment = document.createDocumentFragment();
+  tasks.forEach((task) => {
+    fragment.appendChild(createTaskItem(task));
+  })
+  taskList.replaceChildren(fragment);
+}
+
+// function renderTasks(projectId) {
+//   const tasks = getTasks(projectId);
+//   const fragment = document.createDocumentFragment();
+//   tasks.forEach((task) => {
+//     fragment.appendChild(createTaskItem(task));
+//   })
+//   taskList.replaceChildren(fragment);
+// }
+
+export { createTaskItem, onAddTask, onTaskSubmit, onCancelTask, renderTask, renderTasks, onTaskStatusChange }

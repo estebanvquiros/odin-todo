@@ -1,5 +1,9 @@
-import { createProject, getProjects } from "../services/projectService";
-import { onAddProject, onCancelProject, onProjectSelection, onProjectSubmit, renderProject, renderProjects } from "../views/projectView";
+import { createProject, getProjectById, getProjects } from "../services/projectService";
+import { getTasks } from "../services/taskService";
+import { highlightProjectById, onAddProject, onCancelProject, onProjectSelection, onProjectSubmit, renderProject, renderProjects, setHeaderTitle } from "../views/projectView";
+import { renderTasks } from "../views/taskView";
+
+let currentProjectId = null;
 
 function initProjectController() {
   onAddProject();
@@ -11,6 +15,9 @@ function initProjectController() {
 function loadProjects() {
   const projects = getProjects();
   renderProjects(projects);
+  if (projects.length > 0) {
+    selectProject(projects[0].id);
+  }
 }
 
 function handleProjectSubmit(projectName) {
@@ -18,8 +25,22 @@ function handleProjectSubmit(projectName) {
   renderProject(newProject);
 }
 
-function handleSelectProject(projectId) {
-  console.log(projectId);
+function selectProject(projectId) {
+  highlightProjectById(projectId);
+  handleSelectProject(projectId);
 }
 
-export { initProjectController, loadProjects }
+function handleSelectProject(projectId) {
+  const project = getProjectById(projectId);
+  if (!project) return;
+  currentProjectId = projectId;
+  setHeaderTitle(project.name);
+  const tasks = getTasks(projectId);
+  renderTasks(tasks);
+}
+
+function getCurrentProjectId() {
+  return currentProjectId;
+}
+
+export { initProjectController, loadProjects, getCurrentProjectId }

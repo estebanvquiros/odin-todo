@@ -8,34 +8,34 @@
   width: var(--size-md);
 }
 
-#active-project-name {
+#header-title {
   border-bottom: var(--border-size-1) solid var(--gray-3);
   padding-bottom: var(--size-1);
 }
 
-#new-task-btn {
+#add-task-btn {
   display: flex;
   align-items: center;
   gap: var(--size-2);
   padding: var(--size-3);
 }
 
-#new-task-btn>p {
+#add-task-btn>p {
   font-size: var(--font-size-1);
   color: var(--gray-7);
 }
 
-#new-task-btn>span>svg {
+#add-task-btn>span>svg {
   width: var(--size-5);
   fill: var(--gray-7);
 }
 
-#new-task-btn:hover,
+#add-task-btn:hover,
 .task:hover {
   background-color: var(--gray-1);
 }
 
-#new-task-btn * {
+#add-task-btn * {
   pointer-events: none;
   user-select: none;
 }

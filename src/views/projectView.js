@@ -1,5 +1,6 @@
 const projectList = document.querySelector("#project-list");
 const createProjectBtn = document.querySelector("#create-project-btn");
+const headerTitle = document.querySelector("#header-title");
 
 const projectDialog = document.querySelector("#project-dialog");
 const projectDialogTitle = projectDialog.querySelector("#project-dialog-title");
@@ -87,4 +88,15 @@ function highlightProject(projectItem) {
   projectItem.classList.add("active");
 }
 
-export { renderProjects, renderProject, onAddProject, onProjectSubmit, onCancelProject, onProjectSelection }
+function highlightProjectById(projectId) {
+  const projectItem = projectList.querySelector(`[data-project-id="${projectId}"]`);
+  if (projectItem) {
+    highlightProject(projectItem);
+  }
+}
+
+function setHeaderTitle(projectName) {
+  headerTitle.textContent = projectName;
+}
+
+export { renderProjects, renderProject, onAddProject, onProjectSubmit, onCancelProject, onProjectSelection, highlightProjectById, setHeaderTitle }
