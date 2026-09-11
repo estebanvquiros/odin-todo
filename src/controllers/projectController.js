@@ -1,15 +1,17 @@
-import { createProject, getProjectById, getProjects } from "../services/projectService";
+import { createProject, getProjectById, getProjects, updateProject } from "../services/projectService";
 import { getTasks } from "../services/taskService";
-import { highlightProjectById, onAddProject, onCancelProject, onProjectSelection, onProjectSubmit, renderProject, renderProjects, setHeaderTitle } from "../views/projectView";
+import { highlightProjectById, onAddProject, onCancelProject, onEditProject, onProjectSelection, onProjectSubmit, openEditProjectDialog, renderProject, renderProjects, setHeaderTitle, updateProjectItem } from "../views/projectView";
 import { renderTasks } from "../views/taskView";
 
 let currentProjectId = null;
+let editingProjectId = null;
 
 function initProjectController() {
-  onAddProject();
+  onAddProject(handleAddProject);
   onProjectSubmit(handleProjectSubmit);
   onCancelProject();
   onProjectSelection(handleSelectProject);
+  onEditProject(handleEditProject);
 }
 
 function loadProjects() {
@@ -20,9 +22,20 @@ function loadProjects() {
   }
 }
 
+function handleAddProject() {
+  editingProjectId = null;
+}
+
 function handleProjectSubmit(projectName) {
-  const newProject = createProject(projectName);
-  renderProject(newProject);
+  if (editingProjectId) {
+    updateProject(editingProjectId, projectName);
+    setHeaderTitle(projectName);
+    updateProjectItem(editingProjectId, projectName);
+  } else {
+    const newProject = createProject(projectName);
+    renderProject(newProject);
+  }
+  editingProjectId = null;
 }
 
 function selectProject(projectId) {
@@ -37,6 +50,14 @@ function handleSelectProject(projectId) {
   setHeaderTitle(project.name);
   const tasks = getTasks(projectId);
   renderTasks(tasks);
+}
+
+function handleEditProject() {
+  if (!currentProjectId) return;
+  const project = getProjectById(currentProjectId);
+  if (!project) return;
+  editingProjectId = project.id;
+  openEditProjectDialog(project);
 }
 
 function getCurrentProjectId() {

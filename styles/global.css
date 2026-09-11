@@ -2,6 +2,7 @@
 @import "open-props/sizes";
 @import "open-props/fonts";
 @import "open-props/borders";
+@import "open-props/aspects";
 
 body {
   font-family: "Inter", sans-serif;
@@ -52,5 +53,24 @@ textarea {
 }
 
 .cancel-btn {
+  background-color: var(--gray-3);
+}
+
+.square-btn {
+  height: var(--size-6);
+  aspect-ratio: var(--ratio-square);
+  border: 0;
+  border-radius: var(--radius-2);
+  padding: var(--size-1);
+  background-color: transparent;
+  fill: var(--gray-8);
+}
+
+.square-btn * {
+  pointer-events: none;
+  user-select: none;
+}
+
+.square-btn:hover {
   background-color: var(--gray-3);
 }

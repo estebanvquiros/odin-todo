@@ -8,9 +8,17 @@
   width: var(--size-md);
 }
 
-#header-title {
+#header {
+  display: flex;
+  align-items: center;
+  gap: var(--size-2);
   border-bottom: var(--border-size-1) solid var(--gray-3);
   padding-bottom: var(--size-1);
+}
+
+#header-title {
+  font-size: var(--font-size-5);
+  color: var(--gray-8);
 }
 
 #add-task-btn {

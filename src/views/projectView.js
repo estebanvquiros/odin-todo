@@ -1,6 +1,7 @@
 const projectList = document.querySelector("#project-list");
 const createProjectBtn = document.querySelector("#create-project-btn");
 const headerTitle = document.querySelector("#header-title");
+const projectEditBtn = document.querySelector("#project-edit-btn");
 
 const projectDialog = document.querySelector("#project-dialog");
 const projectDialogTitle = projectDialog.querySelector("#project-dialog-title");
@@ -9,8 +10,11 @@ const projectNameInput = projectForm.querySelector("#project-name-input");
 const projectSubmitBtn = projectDialog.querySelector("#project-submit-btn");
 const projectCancelBtn = projectDialog.querySelector("#project-cancel-btn");
 
-function onAddProject() {
-  createProjectBtn.addEventListener("click", openCreateProjectDialog);
+function onAddProject(handler) {
+  createProjectBtn.addEventListener("click", () => {
+    handler();
+    openCreateProjectDialog();
+  });
 }
 
 function onProjectSubmit(handler) {
@@ -37,6 +41,10 @@ function onProjectSelection(handler) {
   });
 }
 
+function onEditProject(handler) {
+  projectEditBtn.addEventListener("click", handler);
+}
+
 function createProjectItem(project) {
   const projectItem = document.createElement("li");
   const projectName = document.createElement("p");
@@ -45,6 +53,7 @@ function createProjectItem(project) {
   projectItem.classList.add("sidebar-item", "project");
   icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>pound</title><path d="M5.41,21L6.12,17H2.12L2.47,15H6.47L7.53,9H3.53L3.88,7H7.88L8.59,3H10.59L9.88,7H15.88L16.59,3H18.59L17.88,7H21.88L21.53,9H17.53L16.47,15H20.47L20.12,17H16.12L15.41,21H13.41L14.12,17H8.12L7.41,21H5.41M9.53,9L8.47,15H14.47L15.53,9H9.53Z" /></svg>';
   projectName.textContent = project.name;
+  projectName.classList.add("project-name");
   projectItem.dataset.projectId = project.id;
 
   projectItem.append(icon);
@@ -71,6 +80,12 @@ function openCreateProjectDialog() {
   projectDialog.showModal();
 }
 
+function openEditProjectDialog(project) {
+  setupEditProjectDialog();
+  projectNameInput.value = project.name;
+  projectDialog.showModal();
+}
+
 function closeProjectDialog() {
   projectDialog.close();
 }
@@ -80,8 +95,13 @@ function resetProjectForm() {
 }
 
 function setupCreateProjectDialog() {
-  projectDialogTitle.textContent = "Create project";
+  projectDialogTitle.textContent = "New Project";
   projectSubmitBtn.textContent = "Create Project";
+}
+
+function setupEditProjectDialog() {
+  projectDialogTitle.textContent = "Edit Project";
+  projectSubmitBtn.textContent = "Save Changes";
 }
 
 function highlightProject(projectItem) {
@@ -103,4 +123,9 @@ function setHeaderTitle(projectName) {
   headerTitle.textContent = projectName;
 }
 
-export { renderProjects, renderProject, onAddProject, onProjectSubmit, onCancelProject, onProjectSelection, highlightProjectById, setHeaderTitle }
+function updateProjectItem(projectId, projectName) {
+  const projectItem = projectList.querySelector(`[data-project-id="${projectId}"]`);
+  projectItem.querySelector(".project-name").textContent = projectName;
+}
+
+export { renderProjects, renderProject, onAddProject, onProjectSubmit, onCancelProject, onProjectSelection, highlightProjectById, setHeaderTitle, onEditProject, openEditProjectDialog, updateProjectItem }
