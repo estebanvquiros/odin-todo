@@ -25,6 +25,7 @@ function onProjectSubmit(handler) {
 
 function onCancelProject() {
   projectCancelBtn.addEventListener("click", closeProjectDialog);
+  projectDialog.addEventListener("close", resetProjectForm);
 }
 
 function onProjectSelection(handler) {
@@ -71,8 +72,11 @@ function openCreateProjectDialog() {
 }
 
 function closeProjectDialog() {
-  projectForm.reset();
   projectDialog.close();
+}
+
+function resetProjectForm() {
+  projectForm.reset();
 }
 
 function setupCreateProjectDialog() {
