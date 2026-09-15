@@ -34,9 +34,11 @@ function deleteProjectTasks(projectID) {
 
 function updateTask(id, title, description, dueDate, priority, projectID) {
   if (Object.hasOwn(tasks, id)) {
-    tasks[id] = new Task(id, title, description, dueDate, priority, projectID);
+    const updatedTask = new Task(id, title, description, dueDate, priority, projectID);
+    tasks[id] = updatedTask;
+    writeTasks(tasks);
+    return updatedTask;
   }
-  writeTasks(tasks);
 }
 
 function changeTaskStatus(id, completed) {
@@ -46,4 +48,8 @@ function changeTaskStatus(id, completed) {
   writeTasks(tasks);
 }
 
-export { createTask, getTasks, deleteTask, deleteProjectTasks, updateTask, changeTaskStatus }
+function getTaskById(id) {
+  return tasks[id] || null;
+}
+
+export { createTask, getTasks, deleteTask, deleteProjectTasks, updateTask, changeTaskStatus, getTaskById }

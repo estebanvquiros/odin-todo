@@ -76,3 +76,11 @@
 .task.completed .task-duedate {
   background-color: var(--gray-3);
 }
+
+.task-title,
+.task-description,
+.task-duedate,
+.task-priority {
+  user-select: none;
+  pointer-events: none;
+}

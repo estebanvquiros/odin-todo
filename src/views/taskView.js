@@ -2,16 +2,19 @@ const taskList = document.querySelector("#task-list");
 const addTaskBtn = document.querySelector("#add-task-btn");
 
 const taskDialog = document.querySelector("#task-dialog");
+const taskDialogTitle = taskDialog.querySelector("#task-dialog-title");
 const taskForm = taskDialog.querySelector("#task-form");
 const taskTitleInput = taskForm.querySelector("#task-title-input");
 const taskDescriptionInput = taskForm.querySelector("#task-description-input");
 const taskDueDateInput = taskForm.querySelector("#task-date-input");
 const taskPriorityInput = taskForm.querySelector("#task-priority-input");
-const cancelTaskBtn = taskDialog.querySelector("#task-cancel-btn")
+const taskSubmitBtn = taskDialog.querySelector("#task-submit-btn");
+const taskCancelBtn = taskDialog.querySelector("#task-cancel-btn")
 
-function onAddTask() {
+function onAddTask(handler) {
   addTaskBtn.addEventListener("click", () => {
-    openTaskDialog();
+    handler();
+    openCreateTaskDialog();
   });
 }
 
@@ -23,10 +26,17 @@ function onTaskSubmit(handler) {
   })
 }
 
+function onTaskSelect(handler) {
+  taskList.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("task")) return;
+    const taskId = e.target.dataset.taskId;
+    handler(taskId);
+  })
+}
+
 function onCancelTask() {
-  cancelTaskBtn.addEventListener("click", () => {
-    closeTaskDialog();
-  });
+  taskCancelBtn.addEventListener("click", closeTaskDialog);
+  taskDialog.addEventListener("close", resetTaskForm);
 }
 
 function onTaskStatusChange(handler) {
@@ -40,13 +50,30 @@ function onTaskStatusChange(handler) {
   });
 }
 
+function openCreateTaskDialog() {
+  setupCreateTaskDialog();
+  openTaskDialog();
+}
+
+function openEditTaskDialog(task) {
+  setupEditTaskDialog();
+  taskTitleInput.value = task.title;
+  taskDescriptionInput.value = task.description;
+  taskDueDateInput.value = task.dueDate;
+  taskPriorityInput.value = task.priority;
+  openTaskDialog();
+}
+
 function openTaskDialog() {
   taskDialog.showModal();
 }
 
 function closeTaskDialog() {
-  taskForm.reset();
   taskDialog.close();
+}
+
+function resetTaskForm() {
+  taskForm.reset();
 }
 
 function createTaskItem(task) {
@@ -91,6 +118,16 @@ function createTaskItem(task) {
   return taskItem;
 }
 
+function setupCreateTaskDialog() {
+  taskDialogTitle.textContent = "New Task";
+  taskSubmitBtn.textContent = "Create Task";
+}
+
+function setupEditTaskDialog() {
+  taskDialogTitle.textContent = "Edit Task";
+  taskSubmitBtn.textContent = "Save Changes";
+}
+
 function renderTask(task) {
   const taskItem = createTaskItem(task);
   taskList.appendChild(taskItem);
@@ -104,13 +141,10 @@ function renderTasks(tasks) {
   taskList.replaceChildren(fragment);
 }
 
-// function renderTasks(projectId) {
-//   const tasks = getTasks(projectId);
-//   const fragment = document.createDocumentFragment();
-//   tasks.forEach((task) => {
-//     fragment.appendChild(createTaskItem(task));
-//   })
-//   taskList.replaceChildren(fragment);
-// }
+function updateTaskItem(task) {
+  const oldTaskItem = taskList.querySelector(`[data-task-id="${task.id}"]`);
+  const newTaskItem = createTaskItem(task);
+  oldTaskItem.replaceWith(newTaskItem);
+}
 
-export { createTaskItem, onAddTask, onTaskSubmit, onCancelTask, renderTask, renderTasks, onTaskStatusChange }
+export { createTaskItem, onAddTask, onTaskSubmit, onCancelTask, renderTask, renderTasks, onTaskStatusChange, onTaskSelect, openEditTaskDialog, updateTaskItem }
