@@ -7,7 +7,9 @@ import "../styles/content/content.css";
 import "../styles/content/task.css";
 import { initProjectController, loadProjects } from "./controllers/projectController";
 import { initTaskController } from "./controllers/taskController";
+import { initDefaultProject } from "./services/projectService";
 
+initDefaultProject();
 initTaskController();
 initProjectController();
 loadProjects();

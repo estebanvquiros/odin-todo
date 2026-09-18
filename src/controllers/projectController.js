@@ -1,6 +1,6 @@
-import { createProject, getProjectById, getProjects, updateProject } from "../services/projectService";
-import { getTasks } from "../services/taskService";
-import { highlightProjectById, onAddProject, onCancelProject, onEditProject, onProjectSelection, onProjectSubmit, openEditProjectDialog, renderProject, renderProjects, setHeaderTitle, updateProjectItem } from "../views/projectView";
+import { createProject, deleteProject, getDefaultProject, getProjectById, getProjects, initDefaultProject, updateProject } from "../services/projectService";
+import { deleteProjectTasks, getTasks } from "../services/taskService";
+import { highlightProjectById, onAddProject, onCancelProject, onEditProject, onProjectDelete, onProjectSelection, onProjectSubmit, openEditProjectDialog, removeProjectItem, renderProject, renderProjects, setHeaderTitle, updateProjectItem } from "../views/projectView";
 import { renderTasks } from "../views/taskView";
 
 let currentProjectId = null;
@@ -12,6 +12,7 @@ function initProjectController() {
   onCancelProject();
   onProjectSelection(handleSelectProject);
   onEditProject(handleEditProject);
+  onProjectDelete(handleDeleteProject);
 }
 
 function loadProjects() {
@@ -28,7 +29,8 @@ function handleAddProject() {
 
 function handleProjectSubmit(projectName) {
   if (editingProjectId) {
-    updateProject(editingProjectId, projectName);
+    const updatedProject = updateProject(editingProjectId, projectName);
+    if (!updatedProject) return;
     setHeaderTitle(projectName);
     updateProjectItem(editingProjectId, projectName);
   } else {
@@ -36,6 +38,20 @@ function handleProjectSubmit(projectName) {
     renderProject(newProject);
   }
   editingProjectId = null;
+}
+
+function handleDeleteProject() {
+  const success = deleteProject(editingProjectId);
+  if (!success) return;
+  deleteProjectTasks(editingProjectId);
+  removeProjectItem(editingProjectId);
+  editingProjectId = null;
+  let defaultProject = getDefaultProject();
+  if (!defaultProject) {
+    initDefaultProject();
+    defaultProject = getDefaultProject();
+  }
+  selectProject(defaultProject.id);
 }
 
 function selectProject(projectId) {

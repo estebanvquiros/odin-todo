@@ -8,6 +8,7 @@ const projectDialogTitle = projectDialog.querySelector("#project-dialog-title");
 const projectForm = projectDialog.querySelector("#project-form");
 const projectNameInput = projectForm.querySelector("#project-name-input");
 const projectSubmitBtn = projectDialog.querySelector("#project-submit-btn");
+const projectDeleteBtn = projectDialog.querySelector("#project-delete-btn");
 const projectCancelBtn = projectDialog.querySelector("#project-cancel-btn");
 
 function onAddProject(handler) {
@@ -25,6 +26,13 @@ function onProjectSubmit(handler) {
     handler(projectName);
     closeProjectDialog();
   });
+}
+
+function onProjectDelete(handler) {
+  projectDeleteBtn.addEventListener("click", () => {
+    handler();
+    closeProjectDialog();
+  })
 }
 
 function onCancelProject() {
@@ -81,7 +89,7 @@ function openCreateProjectDialog() {
 }
 
 function openEditProjectDialog(project) {
-  setupEditProjectDialog();
+  setupEditProjectDialog(project.isDefault);
   projectNameInput.value = project.name;
   projectDialog.showModal();
 }
@@ -97,11 +105,17 @@ function resetProjectForm() {
 function setupCreateProjectDialog() {
   projectDialogTitle.textContent = "New Project";
   projectSubmitBtn.textContent = "Create Project";
+  projectDeleteBtn.classList.add("hidden");
 }
 
-function setupEditProjectDialog() {
+function setupEditProjectDialog(isDefault) {
   projectDialogTitle.textContent = "Edit Project";
   projectSubmitBtn.textContent = "Save Changes";
+  if (isDefault) {
+    projectDeleteBtn.classList.add("hidden");
+  } else {
+    projectDeleteBtn.classList.remove("hidden");
+  }
 }
 
 function highlightProject(projectItem) {
@@ -119,6 +133,12 @@ function highlightProjectById(projectId) {
   }
 }
 
+function removeProjectItem(projectId) {
+  const projectItem = projectList.querySelector(`[data-project-id="${projectId}"]`);
+  if (!projectItem) return;
+  projectItem.remove();
+}
+
 function setHeaderTitle(projectName) {
   headerTitle.textContent = projectName;
 }
@@ -128,4 +148,4 @@ function updateProjectItem(projectId, projectName) {
   projectItem.querySelector(".project-name").textContent = projectName;
 }
 
-export { renderProjects, renderProject, onAddProject, onProjectSubmit, onCancelProject, onProjectSelection, highlightProjectById, setHeaderTitle, onEditProject, openEditProjectDialog, updateProjectItem }
+export { renderProjects, renderProject, onAddProject, onProjectSubmit, onCancelProject, onProjectSelection, highlightProjectById, setHeaderTitle, onEditProject, openEditProjectDialog, updateProjectItem, onProjectDelete, removeProjectItem }
