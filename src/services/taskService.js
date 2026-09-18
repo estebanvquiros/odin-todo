@@ -19,8 +19,10 @@ function getTasks(projectID = null) {
 }
 
 function deleteTask(id) {
+  if (!Object.hasOwn(tasks, id)) return false;
   delete tasks[id];
   writeTasks(tasks);
+  return true;
 }
 
 function deleteProjectTasks(projectID) {

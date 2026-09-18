@@ -9,6 +9,7 @@ const taskDescriptionInput = taskForm.querySelector("#task-description-input");
 const taskDueDateInput = taskForm.querySelector("#task-date-input");
 const taskPriorityInput = taskForm.querySelector("#task-priority-input");
 const taskSubmitBtn = taskDialog.querySelector("#task-submit-btn");
+const taskDeleteBtn = taskDialog.querySelector("#task-delete-btn");
 const taskCancelBtn = taskDialog.querySelector("#task-cancel-btn")
 
 function onAddTask(handler) {
@@ -31,6 +32,13 @@ function onTaskSelect(handler) {
     if (!e.target.classList.contains("task")) return;
     const taskId = e.target.dataset.taskId;
     handler(taskId);
+  })
+}
+
+function onDeleteTask(handler) {
+  taskDeleteBtn.addEventListener("click", () => {
+    handler();
+    closeTaskDialog();
   })
 }
 
@@ -121,11 +129,13 @@ function createTaskItem(task) {
 function setupCreateTaskDialog() {
   taskDialogTitle.textContent = "New Task";
   taskSubmitBtn.textContent = "Create Task";
+  taskDeleteBtn.classList.add("hidden");
 }
 
 function setupEditTaskDialog() {
   taskDialogTitle.textContent = "Edit Task";
   taskSubmitBtn.textContent = "Save Changes";
+  taskDeleteBtn.classList.remove("hidden");
 }
 
 function renderTask(task) {
@@ -147,4 +157,9 @@ function updateTaskItem(task) {
   oldTaskItem.replaceWith(newTaskItem);
 }
 
-export { createTaskItem, onAddTask, onTaskSubmit, onCancelTask, renderTask, renderTasks, onTaskStatusChange, onTaskSelect, openEditTaskDialog, updateTaskItem }
+function removeTaskItem(taskId) {
+  const taskItem = taskList.querySelector(`[data-task-id="${taskId}"]`);
+  taskItem.remove();
+}
+
+export { createTaskItem, onAddTask, onTaskSubmit, onCancelTask, renderTask, renderTasks, onTaskStatusChange, onTaskSelect, openEditTaskDialog, updateTaskItem, onDeleteTask, removeTaskItem }

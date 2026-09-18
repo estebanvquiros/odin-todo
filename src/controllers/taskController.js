@@ -1,5 +1,5 @@
-import { changeTaskStatus, createTask, getTaskById, updateTask } from "../services/taskService";
-import { onAddTask, onCancelTask, onTaskSelect, onTaskStatusChange, onTaskSubmit, openEditTaskDialog, renderTask, renderTasks, updateTaskItem } from "../views/taskView"
+import { changeTaskStatus, createTask, deleteTask, getTaskById, updateTask } from "../services/taskService";
+import { onAddTask, onCancelTask, onDeleteTask, onTaskSelect, onTaskStatusChange, onTaskSubmit, openEditTaskDialog, removeTaskItem, renderTask, renderTasks, updateTaskItem } from "../views/taskView"
 import { getCurrentProjectId } from "./projectController";
 
 let editingTaskId = null;
@@ -10,6 +10,7 @@ function initTaskController() {
   onCancelTask();
   onTaskStatusChange(handleTaskStatusChange);
   onTaskSelect(handleTaskSelect);
+  onDeleteTask(handleDeleteTask);
 }
 
 function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority) {
@@ -21,6 +22,14 @@ function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority)
     const newTask = createTask(taskTitle, taskDescription, taskDueDate, taskPriority, getCurrentProjectId());
     renderTask(newTask);
   }
+}
+
+function handleDeleteTask() {
+  console.log(`Deleting task ${editingTaskId}`);
+  const success = deleteTask(editingTaskId);
+  if (!success) return;
+  removeTaskItem(editingTaskId);
+  editingTaskId = null;
 }
 
 function handleAddTask() {
