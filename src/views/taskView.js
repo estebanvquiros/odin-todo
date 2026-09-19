@@ -5,7 +5,9 @@ const taskDialog = document.querySelector("#task-dialog");
 const taskDialogTitle = taskDialog.querySelector("#task-dialog-title");
 const taskForm = taskDialog.querySelector("#task-form");
 const taskTitleInput = taskForm.querySelector("#task-title-input");
+const taskTitleError = taskForm.querySelector("#task-title-error");
 const taskDescriptionInput = taskForm.querySelector("#task-description-input");
+const taskDescriptionError = taskForm.querySelector("#task-description-error");
 const taskDueDateInput = taskForm.querySelector("#task-date-input");
 const taskPriorityInput = taskForm.querySelector("#task-priority-input");
 const taskSubmitBtn = taskDialog.querySelector("#task-submit-btn");
@@ -23,7 +25,6 @@ function onTaskSubmit(handler) {
   taskForm.addEventListener("submit", (e) => {
     e.preventDefault();
     handler(taskTitleInput.value.trim(), taskDescriptionInput.value.trim(), taskDueDateInput.value, taskPriorityInput.value);
-    closeTaskDialog();
   })
 }
 
@@ -82,6 +83,7 @@ function closeTaskDialog() {
 
 function resetTaskForm() {
   taskForm.reset();
+  hideTaskErrors();
 }
 
 function createTaskItem(task) {
@@ -162,4 +164,19 @@ function removeTaskItem(taskId) {
   taskItem.remove();
 }
 
-export { createTaskItem, onAddTask, onTaskSubmit, onCancelTask, renderTask, renderTasks, onTaskStatusChange, onTaskSelect, openEditTaskDialog, updateTaskItem, onDeleteTask, removeTaskItem }
+function showTaskTitleError(message) {
+  taskTitleError.textContent = message;
+  taskTitleError.classList.remove("hidden");
+}
+
+function hideTaskErrors() {
+  taskTitleError.classList.add("hidden");
+  taskDescriptionError.classList.add("hidden");
+}
+
+function showTaskDescriptionError(message) {
+  taskDescriptionError.textContent = message;
+  taskDescriptionError.classList.remove("hidden");
+}
+
+export { createTaskItem, onAddTask, onTaskSubmit, onCancelTask, renderTask, renderTasks, onTaskStatusChange, onTaskSelect, openEditTaskDialog, updateTaskItem, onDeleteTask, removeTaskItem, showTaskDescriptionError, showTaskTitleError, closeTaskDialog }

@@ -1,5 +1,5 @@
 import { changeTaskStatus, createTask, deleteTask, getTaskById, updateTask } from "../services/taskService";
-import { onAddTask, onCancelTask, onDeleteTask, onTaskSelect, onTaskStatusChange, onTaskSubmit, openEditTaskDialog, removeTaskItem, renderTask, renderTasks, updateTaskItem } from "../views/taskView"
+import { closeTaskDialog, onAddTask, onCancelTask, onDeleteTask, onTaskSelect, onTaskStatusChange, onTaskSubmit, openEditTaskDialog, removeTaskItem, renderTask, renderTasks, showTaskDescriptionError, showTaskTitleError, updateTaskItem } from "../views/taskView"
 import { getCurrentProjectId } from "./projectController";
 
 let editingTaskId = null;
@@ -14,6 +14,18 @@ function initTaskController() {
 }
 
 function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority) {
+  if (!taskTitle) {
+    showTaskTitleError("Task title cannot be empty");
+    return;
+  }
+  if (taskTitle.length > 100) {
+    showTaskTitleError("Task name must be less than 100 characters");
+    return;
+  }
+  if (taskDescription.length > 500) {
+    showTaskDescriptionError("Task description must be less than 500 characters");
+    return;
+  }
   if (editingTaskId) {
     const updatedTask = updateTask(editingTaskId, taskTitle, taskDescription, taskDueDate, taskPriority, getCurrentProjectId());
     if (!updatedTask) return;
@@ -22,6 +34,8 @@ function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority)
     const newTask = createTask(taskTitle, taskDescription, taskDueDate, taskPriority, getCurrentProjectId());
     renderTask(newTask);
   }
+  editingTaskId = null;
+  closeTaskDialog()
 }
 
 function handleDeleteTask() {

@@ -86,11 +86,13 @@
       <form id="task-form">
         <div>
           <label for="task-title-input">Title:</label>
-          <input type="text" id="task-title-input" required>
+          <input type="text" id="task-title-input" maxlength="100" required>
+          <p id="task-title-error" class="error-msg hidden">Error message</p>
         </div>
         <div>
           <label for="task-description-input">Description:</label>
-          <textarea id="task-description-input" rows="5"></textarea>
+          <textarea id="task-description-input" maxlength="500" rows="5"></textarea>
+          <p id="task-description-error" class="error-msg hidden">Error message</p>
         </div>
         <div>
           <label for="task-date-input">Due date:</label>
