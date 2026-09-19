@@ -1,6 +1,6 @@
 import { createProject, deleteProject, getDefaultProject, getProjectById, getProjects, initDefaultProject, updateProject } from "../services/projectService";
 import { deleteProjectTasks, getTasks } from "../services/taskService";
-import { highlightProjectById, onAddProject, onCancelProject, onEditProject, onProjectDelete, onProjectSelection, onProjectSubmit, openEditProjectDialog, removeProjectItem, renderProject, renderProjects, setHeaderTitle, updateProjectItem } from "../views/projectView";
+import { closeProjectDialog, highlightProjectById, onAddProject, onCancelProject, onEditProject, onProjectDelete, onProjectSelection, onProjectSubmit, openEditProjectDialog, removeProjectItem, renderProject, renderProjects, setHeaderTitle, showProjectNameError, updateProjectItem } from "../views/projectView";
 import { renderTasks } from "../views/taskView";
 
 let currentProjectId = null;
@@ -28,6 +28,14 @@ function handleAddProject() {
 }
 
 function handleProjectSubmit(projectName) {
+  if (!projectName) {
+    showProjectNameError("Project name cannot be empty");
+    return;
+  }
+  if (projectName.length > 30) {
+    showProjectNameError("Project name must be less than 30 characters");
+    return;
+  }
   if (editingProjectId) {
     const updatedProject = updateProject(editingProjectId, projectName);
     if (!updatedProject) return;
@@ -37,6 +45,7 @@ function handleProjectSubmit(projectName) {
     const newProject = createProject(projectName);
     renderProject(newProject);
   }
+  closeProjectDialog();
   editingProjectId = null;
 }
 

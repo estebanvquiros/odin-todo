@@ -7,6 +7,7 @@ const projectDialog = document.querySelector("#project-dialog");
 const projectDialogTitle = projectDialog.querySelector("#project-dialog-title");
 const projectForm = projectDialog.querySelector("#project-form");
 const projectNameInput = projectForm.querySelector("#project-name-input");
+const projectNameErrorMsg = projectForm.querySelector("#project-name-error-msg");
 const projectSubmitBtn = projectDialog.querySelector("#project-submit-btn");
 const projectDeleteBtn = projectDialog.querySelector("#project-delete-btn");
 const projectCancelBtn = projectDialog.querySelector("#project-cancel-btn");
@@ -22,9 +23,7 @@ function onProjectSubmit(handler) {
   projectForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const projectName = projectNameInput.value.trim();
-    if (!projectName) return;
     handler(projectName);
-    closeProjectDialog();
   });
 }
 
@@ -100,6 +99,7 @@ function closeProjectDialog() {
 
 function resetProjectForm() {
   projectForm.reset();
+  hideProjectNameError();
 }
 
 function setupCreateProjectDialog() {
@@ -148,4 +148,13 @@ function updateProjectItem(projectId, projectName) {
   projectItem.querySelector(".project-name").textContent = projectName;
 }
 
-export { renderProjects, renderProject, onAddProject, onProjectSubmit, onCancelProject, onProjectSelection, highlightProjectById, setHeaderTitle, onEditProject, openEditProjectDialog, updateProjectItem, onProjectDelete, removeProjectItem }
+function showProjectNameError(message) {
+  projectNameErrorMsg.textContent = message;
+  projectNameErrorMsg.classList.remove("hidden");
+}
+
+function hideProjectNameError() {
+  projectNameErrorMsg.classList.add("hidden");
+}
+
+export { renderProjects, renderProject, onAddProject, onProjectSubmit, onCancelProject, onProjectSelection, highlightProjectById, setHeaderTitle, onEditProject, openEditProjectDialog, closeProjectDialog, updateProjectItem, onProjectDelete, removeProjectItem, showProjectNameError }
