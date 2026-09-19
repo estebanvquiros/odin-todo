@@ -135,9 +135,10 @@ function setupCreateTaskDialog() {
 }
 
 function setupEditTaskDialog() {
-  taskDialogTitle.textContent = "Edit Task";
-  taskSubmitBtn.textContent = "Save Changes";
+  taskDialogTitle.textContent = "Task Details";
+  taskSubmitBtn.textContent = "Save";
   taskDeleteBtn.classList.remove("hidden");
+  taskCancelBtn.textContent = "Close";
 }
 
 function renderTask(task) {
