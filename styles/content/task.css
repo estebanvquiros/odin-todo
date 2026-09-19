@@ -32,6 +32,12 @@
   grid-area: 2 / 2;
   font-size: var(--font-size-1);
   color: var(--gray-6);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: break-word;
 }
 
 .task-duedate,

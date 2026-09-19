@@ -111,3 +111,7 @@ textarea {
   font-weight: var(--font-weight-6);
   color: var(--red-6);
 }
+
+input.input-error {
+  border-color: var(--red-6);
+}

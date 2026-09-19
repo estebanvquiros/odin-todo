@@ -4,6 +4,15 @@
   display: flex;
   flex-direction: column;
   width: var(--size-fluid-9);
+  min-width: var(--size-px-13);
+  min-height: 0;
+  overflow: hidden;
+}
+
+#sidebar-content {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-5) transparent;
 }
 
 .sidebar-label,
@@ -33,6 +42,7 @@
 .sidebar-item>span>svg {
   width: var(--size-3);
   fill: var(--gray-7);
+  flex-shrink: 0;
 }
 
 .sidebar-item>p {
@@ -60,4 +70,11 @@
 
 .project.active svg {
   fill: var(--gray-0);
+}
+
+.project-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
 }

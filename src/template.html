@@ -22,16 +22,18 @@
         </svg>
         <h1>todinist</h1>
       </div>
-      <span class="sidebar-label">Projects</span>
-      <ul class="sidebar-list" id="project-list"></ul>
-      <div class="sidebar-item" id="create-project-btn">
-        <span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <title>plus</title>
-            <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-          </svg>
-        </span>
-        <p>Add project</p>
+      <div id="sidebar-content">
+        <span class="sidebar-label">Projects</span>
+        <ul class="sidebar-list" id="project-list"></ul>
+        <div class="sidebar-item" id="create-project-btn">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>plus</title>
+              <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+            </svg>
+          </span>
+          <p>Add project</p>
+        </div>
       </div>
     </div>
     <div id="main">
@@ -91,7 +93,7 @@
         </div>
         <div>
           <label for="task-description-input">Description:</label>
-          <textarea id="task-description-input" maxlength="500" rows="5"></textarea>
+          <textarea id="task-description-input" maxlength="500" rows="8"></textarea>
           <p id="task-description-error" class="error-msg hidden">Error message</p>
         </div>
         <div>

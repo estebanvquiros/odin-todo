@@ -150,11 +150,13 @@ function updateProjectItem(projectId, projectName) {
 
 function showProjectNameError(message) {
   projectNameErrorMsg.textContent = message;
+  projectNameInput.classList.add("input-error");
   projectNameErrorMsg.classList.remove("hidden");
 }
 
 function hideProjectNameError() {
   projectNameErrorMsg.classList.add("hidden");
+  projectNameInput.classList.remove("input-error");
 }
 
 export { renderProjects, renderProject, onAddProject, onProjectSubmit, onCancelProject, onProjectSelection, highlightProjectById, setHeaderTitle, onEditProject, openEditProjectDialog, closeProjectDialog, updateProjectItem, onProjectDelete, removeProjectItem, showProjectNameError }

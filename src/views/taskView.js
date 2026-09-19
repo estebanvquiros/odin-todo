@@ -167,16 +167,20 @@ function removeTaskItem(taskId) {
 
 function showTaskTitleError(message) {
   taskTitleError.textContent = message;
+  taskTitleInput.classList.add("input-error");
   taskTitleError.classList.remove("hidden");
 }
 
 function hideTaskErrors() {
   taskTitleError.classList.add("hidden");
   taskDescriptionError.classList.add("hidden");
+  taskTitleInput.classList.remove("input-error");
+  taskDescriptionInput.classList.remove("input-error");
 }
 
 function showTaskDescriptionError(message) {
   taskDescriptionError.textContent = message;
+  taskDescriptionInput.classList.add("input-error");
   taskDescriptionError.classList.remove("hidden");
 }
 

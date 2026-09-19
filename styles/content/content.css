@@ -2,10 +2,15 @@
   padding-top: var(--size-8);
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+  min-height: 0;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 #content {
   width: var(--size-md);
+  padding-bottom: var(--size-8);
 }
 
 #header {
@@ -19,6 +24,10 @@
 #header-title {
   font-size: var(--font-size-5);
   color: var(--gray-8);
+  max-width: var(--size-content-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #add-task-btn {
