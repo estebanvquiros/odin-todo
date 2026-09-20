@@ -112,6 +112,7 @@ textarea {
   color: var(--red-6);
 }
 
-input.input-error {
+input.input-error,
+textarea.input-error {
   border-color: var(--red-6);
 }
