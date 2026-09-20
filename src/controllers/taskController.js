@@ -14,18 +14,24 @@ function initTaskController() {
 }
 
 function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority) {
+
+  let hasError = false;
+
   if (!taskTitle) {
     showTaskTitleError("Task title cannot be empty");
-    return;
+    hasError = true;
   }
-  if (taskTitle.length > 100) {
+  if (taskTitle.length > 10) {
     showTaskTitleError("Task name must be less than 100 characters");
-    return;
+    hasError = true;
   }
-  if (taskDescription.length > 500) {
+  if (taskDescription.length > 10) {
     showTaskDescriptionError("Task description must be less than 500 characters");
-    return;
+    hasError = true;
   }
+
+  if (hasError) return;
+
   if (editingTaskId) {
     const updatedTask = updateTask(editingTaskId, taskTitle, taskDescription, taskDueDate, taskPriority, getCurrentProjectId());
     if (!updatedTask) return;
