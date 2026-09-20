@@ -21,11 +21,11 @@ function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority)
     showTaskTitleError("Task title cannot be empty");
     hasError = true;
   }
-  if (taskTitle.length > 10) {
+  if (taskTitle.length > 100) {
     showTaskTitleError("Task name must be less than 100 characters");
     hasError = true;
   }
-  if (taskDescription.length > 10) {
+  if (taskDescription.length > 500) {
     showTaskDescriptionError("Task description must be less than 500 characters");
     hasError = true;
   }
