@@ -1,3 +1,5 @@
+import { differenceInCalendarDays, format, isToday, isTomorrow, isYesterday, parseISO } from "date-fns";
+
 const taskList = document.querySelector("#task-list");
 const addTaskBtn = document.querySelector("#add-task-btn");
 
@@ -110,7 +112,7 @@ function createTaskItem(task) {
   if (task.dueDate) {
     const taskDueDate = document.createElement("p");
     taskDueDate.classList.add("task-duedate")
-    taskDueDate.textContent = task.dueDate;
+    taskDueDate.textContent = formatDueDate(task.dueDate);
     taskItem.appendChild(taskDueDate);
   }
 
@@ -126,6 +128,21 @@ function createTaskItem(task) {
   taskItem.appendChild(taskPriority);
 
   return taskItem;
+}
+
+function formatDueDate(dueDateString) {
+  const dueDate = parseISO(dueDateString);
+
+  if (isToday(dueDate)) return "Today";
+  if (isTomorrow(dueDate)) return "Tomorrow";
+  if (isYesterday(dueDate)) return "Yesterday";
+
+  const remainingDays = differenceInCalendarDays(dueDate, new Date);
+
+  if (remainingDays < 0) return `${Math.abs(remainingDays)} days ago`;
+  if (remainingDays <= 7) return `In ${remainingDays} days`;
+
+  return format(dueDate, 'MMM d, yyyy');
 }
 
 function setupCreateTaskDialog() {
