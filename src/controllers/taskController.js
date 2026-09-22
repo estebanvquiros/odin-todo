@@ -1,5 +1,6 @@
+import { isPast, parseISO, isValid, differenceInCalendarDays } from "date-fns";
 import { changeTaskStatus, createTask, deleteTask, getTaskById, updateTask } from "../services/taskService";
-import { closeTaskDialog, onAddTask, onCancelTask, onDeleteTask, onTaskSelect, onTaskStatusChange, onTaskSubmit, openEditTaskDialog, removeTaskItem, renderTask, renderTasks, showTaskDescriptionError, showTaskTitleError, updateTaskItem } from "../views/taskView"
+import { closeTaskDialog, onAddTask, onCancelTask, onDeleteTask, onTaskSelect, onTaskStatusChange, onTaskSubmit, openEditTaskDialog, removeTaskItem, renderTask, renderTasks, showTaskDescriptionError, showTaskTitleError, showTaskDueDateError, updateTaskItem } from "../views/taskView"
 import { getCurrentProjectId } from "./projectController";
 
 let editingTaskId = null;
@@ -20,13 +21,21 @@ function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority)
   if (!taskTitle) {
     showTaskTitleError("Task title cannot be empty");
     hasError = true;
-  }
-  if (taskTitle.length > 100) {
+  } else if (taskTitle.length > 100) {
     showTaskTitleError("Task name must be less than 100 characters");
     hasError = true;
   }
+
   if (taskDescription.length > 500) {
     showTaskDescriptionError("Task description must be less than 500 characters");
+    hasError = true;
+  }
+
+  if (!isValid(parseISO(taskDueDate))) {
+    showTaskDueDateError("Please enter a valid date");
+    hasError = true;
+  } else if (differenceInCalendarDays(parseISO(taskDueDate), new Date()) < 0) {
+    showTaskDueDateError("Date must be today or later");
     hasError = true;
   }
 

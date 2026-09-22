@@ -11,6 +11,7 @@ const taskTitleError = taskForm.querySelector("#task-title-error");
 const taskDescriptionInput = taskForm.querySelector("#task-description-input");
 const taskDescriptionError = taskForm.querySelector("#task-description-error");
 const taskDueDateInput = taskForm.querySelector("#task-date-input");
+const taskDueDateError = taskForm.querySelector("#task-duedate-error");
 const taskPriorityInput = taskForm.querySelector("#task-priority-input");
 const taskSubmitBtn = taskDialog.querySelector("#task-submit-btn");
 const taskDeleteBtn = taskDialog.querySelector("#task-delete-btn");
@@ -193,6 +194,8 @@ function hideTaskErrors() {
   taskDescriptionError.classList.add("hidden");
   taskTitleInput.classList.remove("input-error");
   taskDescriptionInput.classList.remove("input-error");
+  taskDueDateError.classList.add("hidden");
+  taskDueDateInput.classList.remove("input-error");
 }
 
 function showTaskDescriptionError(message) {
@@ -201,4 +204,10 @@ function showTaskDescriptionError(message) {
   taskDescriptionError.classList.remove("hidden");
 }
 
-export { createTaskItem, onAddTask, onTaskSubmit, onCancelTask, renderTask, renderTasks, onTaskStatusChange, onTaskSelect, openEditTaskDialog, updateTaskItem, onDeleteTask, removeTaskItem, showTaskDescriptionError, showTaskTitleError, closeTaskDialog }
+function showTaskDueDateError(message) {
+  taskDueDateError.textContent = message;
+  taskDueDateInput.classList.add("input-error");
+  taskDueDateError.classList.remove("hidden");
+}
+
+export { createTaskItem, onAddTask, onTaskSubmit, onCancelTask, renderTask, renderTasks, onTaskStatusChange, onTaskSelect, openEditTaskDialog, updateTaskItem, onDeleteTask, removeTaskItem, showTaskDescriptionError, showTaskTitleError, closeTaskDialog, showTaskDueDateError }
