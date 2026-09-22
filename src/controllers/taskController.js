@@ -39,14 +39,16 @@ function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority)
     hasError = true;
   }
 
+  const sanitizedPriority = ["High", "Medium", "Low"].includes(taskPriority) ? taskPriority : "Low";
+
   if (hasError) return;
 
   if (editingTaskId) {
-    const updatedTask = updateTask(editingTaskId, taskTitle, taskDescription, taskDueDate, taskPriority, getCurrentProjectId());
+    const updatedTask = updateTask(editingTaskId, taskTitle, taskDescription, taskDueDate, sanitizedPriority, getCurrentProjectId());
     if (!updatedTask) return;
     updateTaskItem(updatedTask);
   } else {
-    const newTask = createTask(taskTitle, taskDescription, taskDueDate, taskPriority, getCurrentProjectId());
+    const newTask = createTask(taskTitle, taskDescription, taskDueDate, sanitizedPriority, getCurrentProjectId());
     renderTask(newTask);
   }
   editingTaskId = null;
