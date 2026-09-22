@@ -31,12 +31,14 @@ function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority)
     hasError = true;
   }
 
-  if (!isValid(parseISO(taskDueDate))) {
-    showTaskDueDateError("Please enter a valid date");
-    hasError = true;
-  } else if (differenceInCalendarDays(parseISO(taskDueDate), new Date()) < 0) {
-    showTaskDueDateError("Date must be today or later");
-    hasError = true;
+  if (taskDueDate) {
+    if (!isValid(parseISO(taskDueDate))) {
+      showTaskDueDateError("Please enter a valid date");
+      hasError = true;
+    } else if (differenceInCalendarDays(parseISO(taskDueDate), new Date()) < 0) {
+      showTaskDueDateError("Date must be today or later");
+      hasError = true;
+    }
   }
 
   const sanitizedPriority = ["High", "Medium", "Low"].includes(taskPriority) ? taskPriority : "Low";
