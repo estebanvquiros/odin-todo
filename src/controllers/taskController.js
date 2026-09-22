@@ -1,4 +1,4 @@
-import { isPast, parseISO, isValid, differenceInCalendarDays } from "date-fns";
+import { parseISO, isValid, differenceInCalendarDays } from "date-fns";
 import { changeTaskStatus, createTask, deleteTask, getTaskById, updateTask } from "../services/taskService";
 import { closeTaskDialog, onAddTask, onCancelTask, onDeleteTask, onTaskSelect, onTaskStatusChange, onTaskSubmit, openEditTaskDialog, removeTaskItem, renderTask, renderTasks, showTaskDescriptionError, showTaskTitleError, showTaskDueDateError, updateTaskItem } from "../views/taskView"
 import { getCurrentProjectId } from "./projectController";
