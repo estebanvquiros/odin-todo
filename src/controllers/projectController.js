@@ -10,7 +10,7 @@ function initProjectController() {
   onAddProject(handleAddProject);
   onProjectSubmit(handleProjectSubmit);
   onCancelProject();
-  onProjectSelection(handleSelectProject);
+  onProjectSelection(selectProject);
   onEditProject(handleEditProject);
   onProjectDelete(handleDeleteProject);
 }
@@ -64,14 +64,10 @@ function handleDeleteProject() {
 }
 
 function selectProject(projectId) {
-  highlightProjectById(projectId);
-  handleSelectProject(projectId);
-}
-
-function handleSelectProject(projectId) {
   const project = getProjectById(projectId);
   if (!project) return;
   currentProjectId = projectId;
+  highlightProjectById(projectId);
   setHeaderTitle(project.name);
   const tasks = getTasks(projectId);
   renderTasks(tasks);

@@ -43,7 +43,6 @@ function onProjectSelection(handler) {
   projectList.addEventListener("click", (e) => {
     const project = e.target;
     if (!project.classList.contains("project")) return;
-    highlightProject(project);
     handler(project.dataset.projectId);
   });
 }
