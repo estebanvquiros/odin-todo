@@ -49,9 +49,8 @@ function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority,
   const currentProjectId = getCurrentProjectId();
   if (!currentProjectId) return;
 
-  if (!getProjectById(selectedProjectId)) return;
-
   if (editingTaskId) {
+    if (!getProjectById(selectedProjectId)) return;
     const updatedTask = updateTask(editingTaskId, taskTitle, taskDescription, taskDueDate, sanitizedPriority, selectedProjectId);
     if (!updatedTask) return;
     if (currentProjectId === selectedProjectId) {
