@@ -13,6 +13,8 @@ const taskDescriptionError = taskForm.querySelector("#task-description-error");
 const taskDueDateInput = taskForm.querySelector("#task-date-input");
 const taskDueDateError = taskForm.querySelector("#task-duedate-error");
 const taskPriorityInput = taskForm.querySelector("#task-priority-input");
+const taskProjectSelector = taskForm.querySelector("#task-project-selector");
+const taskProjectInput = taskForm.querySelector("#task-project-input");
 const taskSubmitBtn = taskDialog.querySelector("#task-submit-btn");
 const taskDeleteBtn = taskDialog.querySelector("#task-delete-btn");
 const taskCancelBtn = taskDialog.querySelector("#task-cancel-btn")
@@ -27,7 +29,7 @@ function onAddTask(handler) {
 function onTaskSubmit(handler) {
   taskForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    handler(taskTitleInput.value.trim(), taskDescriptionInput.value.trim(), taskDueDateInput.value, taskPriorityInput.value);
+    handler(taskTitleInput.value.trim(), taskDescriptionInput.value.trim(), taskDueDateInput.value, taskPriorityInput.value, taskProjectInput.value);
   })
 }
 
@@ -67,13 +69,25 @@ function openCreateTaskDialog() {
   openTaskDialog();
 }
 
-function openEditTaskDialog(task) {
+function openEditTaskDialog(task, projects) {
   setupEditTaskDialog();
   taskTitleInput.value = task.title;
   taskDescriptionInput.value = task.description;
   taskDueDateInput.value = task.dueDate;
   taskPriorityInput.value = task.priority;
+  populateTaskProjectOptions(projects, task.projectID);
   openTaskDialog();
+}
+
+function populateTaskProjectOptions(projects, selectedProjectId) {
+  taskProjectInput.replaceChildren();
+  projects.forEach((project) => {
+    const option = document.createElement("option");
+    option.value = project.id;
+    option.text = project.name;
+    if (project.id === selectedProjectId) option.selected = true;
+    taskProjectInput.add(option);
+  })
 }
 
 function openTaskDialog() {
@@ -150,6 +164,7 @@ function setupCreateTaskDialog() {
   taskDialogTitle.textContent = "New Task";
   taskSubmitBtn.textContent = "Create Task";
   taskDeleteBtn.classList.add("hidden");
+  taskProjectSelector.classList.add("hidden");
 }
 
 function setupEditTaskDialog() {
@@ -157,6 +172,7 @@ function setupEditTaskDialog() {
   taskSubmitBtn.textContent = "Save";
   taskDeleteBtn.classList.remove("hidden");
   taskCancelBtn.textContent = "Close";
+  taskProjectSelector.classList.remove("hidden");
 }
 
 function renderTask(task) {

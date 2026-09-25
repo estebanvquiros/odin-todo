@@ -2,6 +2,7 @@ import { parseISO, isValid, differenceInCalendarDays } from "date-fns";
 import { changeTaskStatus, createTask, deleteTask, getTaskById, updateTask } from "../services/taskService";
 import { closeTaskDialog, onAddTask, onCancelTask, onDeleteTask, onTaskSelect, onTaskStatusChange, onTaskSubmit, openEditTaskDialog, removeTaskItem, renderTask, renderTasks, showTaskDescriptionError, showTaskTitleError, showTaskDueDateError, updateTaskItem } from "../views/taskView"
 import { getCurrentProjectId } from "./projectController";
+import { getProjectById, getProjects } from "../services/projectService";
 
 let editingTaskId = null;
 
@@ -14,7 +15,7 @@ function initTaskController() {
   onDeleteTask(handleDeleteTask);
 }
 
-function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority) {
+function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority, selectedProjectId) {
 
   let hasError = false;
 
@@ -45,12 +46,21 @@ function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority)
 
   if (hasError) return;
 
+  const currentProjectId = getCurrentProjectId();
+  if (!currentProjectId) return;
+
+  if (!getProjectById(selectedProjectId)) return;
+
   if (editingTaskId) {
-    const updatedTask = updateTask(editingTaskId, taskTitle, taskDescription, taskDueDate, sanitizedPriority, getCurrentProjectId());
+    const updatedTask = updateTask(editingTaskId, taskTitle, taskDescription, taskDueDate, sanitizedPriority, selectedProjectId);
     if (!updatedTask) return;
-    updateTaskItem(updatedTask);
+    if (currentProjectId === selectedProjectId) {
+      updateTaskItem(updatedTask);
+    } else {
+      removeTaskItem(editingTaskId);
+    }
   } else {
-    const newTask = createTask(taskTitle, taskDescription, taskDueDate, sanitizedPriority, getCurrentProjectId());
+    const newTask = createTask(taskTitle, taskDescription, taskDueDate, sanitizedPriority, currentProjectId);
     renderTask(newTask);
   }
   editingTaskId = null;
@@ -77,7 +87,7 @@ function handleTaskSelect(taskId) {
   const task = getTaskById(taskId);
   if (!task) return;
   editingTaskId = taskId;
-  openEditTaskDialog(task);
+  openEditTaskDialog(task, getProjects());
 }
 
 export { initTaskController }
