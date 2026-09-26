@@ -35,12 +35,12 @@ function deleteProjectTasks(projectID) {
 }
 
 function updateTask(id, title, description, dueDate, priority, projectID) {
-  if (Object.hasOwn(tasks, id)) {
-    const updatedTask = new Task(id, title, description, dueDate, priority, projectID);
-    tasks[id] = updatedTask;
-    writeTasks(tasks);
-    return updatedTask;
-  }
+  const oldTask = tasks[id];
+  if (!oldTask) return null;
+  const updatedTask = new Task(id, title, description, dueDate, priority, projectID, oldTask.completed);
+  tasks[id] = updatedTask;
+  writeTasks(tasks);
+  return updatedTask;
 }
 
 function changeTaskStatus(id, completed) {
