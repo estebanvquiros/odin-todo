@@ -16,7 +16,29 @@ function initTaskController() {
 }
 
 function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority, selectedProjectId) {
+  if (hasTaskFormErrors(taskTitle, taskDescription, taskDueDate, taskPriority)) return;
 
+  const currentProjectId = getCurrentProjectId();
+  if (!currentProjectId) return;
+
+  if (editingTaskId) {
+    if (!getProjectById(selectedProjectId)) return;
+    const updatedTask = updateTask(editingTaskId, taskTitle, taskDescription, taskDueDate, taskPriority, selectedProjectId);
+    if (!updatedTask) return;
+    if (currentProjectId === selectedProjectId) {
+      updateTaskItem(updatedTask);
+    } else {
+      removeTaskItem(editingTaskId);
+    }
+  } else {
+    const newTask = createTask(taskTitle, taskDescription, taskDueDate, taskPriority, currentProjectId);
+    renderTask(newTask);
+  }
+  editingTaskId = null;
+  closeTaskDialog()
+}
+
+function hasTaskFormErrors(taskTitle, taskDescription, taskDueDate, taskPriority) {
   let hasError = false;
 
   if (!taskTitle) {
@@ -42,28 +64,11 @@ function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority,
     }
   }
 
-  const sanitizedPriority = ["High", "Medium", "Low"].includes(taskPriority) ? taskPriority : "Low";
-
-  if (hasError) return;
-
-  const currentProjectId = getCurrentProjectId();
-  if (!currentProjectId) return;
-
-  if (editingTaskId) {
-    if (!getProjectById(selectedProjectId)) return;
-    const updatedTask = updateTask(editingTaskId, taskTitle, taskDescription, taskDueDate, sanitizedPriority, selectedProjectId);
-    if (!updatedTask) return;
-    if (currentProjectId === selectedProjectId) {
-      updateTaskItem(updatedTask);
-    } else {
-      removeTaskItem(editingTaskId);
-    }
-  } else {
-    const newTask = createTask(taskTitle, taskDescription, taskDueDate, sanitizedPriority, currentProjectId);
-    renderTask(newTask);
+  if (!["High", "Medium", "Low"].includes(taskPriority)) {
+    hasError = true;
   }
-  editingTaskId = null;
-  closeTaskDialog()
+
+  return hasError;
 }
 
 function handleDeleteTask() {
