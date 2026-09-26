@@ -8,12 +8,25 @@
 }
 
 .task-checkbox {
+  appearance: none;
+  border: var(--border-size-2) solid var(--gray-6);
   border-radius: var(--radius-5);
-  width: var(--size-3);
-  height: var(--size-3);
+  width: var(--size-4);
+  height: var(--size-4);
   margin-right: var(--size-3);
   grid-area: 1 / 1;
 }
+
+.task-checkbox:hover {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23adb5bd'%3E%3Ctitle%3Echeck-bold%3C/title%3E%3Cpath d='M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z' /%3E%3C/svg%3E");
+}
+
+.task-checkbox:checked {
+  background-color: var(--indigo-1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234263eb'%3E%3Ctitle%3Echeck-bold%3C/title%3E%3Cpath d='M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z' /%3E%3C/svg%3E");
+  border-color: var(--indigo-7);
+}
+
 
 .task-title,
 .task-description {
