@@ -54,4 +54,12 @@ function getTaskById(id) {
   return tasks[id] || null;
 }
 
-export { createTask, getTasks, deleteTask, deleteProjectTasks, updateTask, changeTaskStatus, getTaskById }
+export {
+  createTask,
+  getTasks,
+  deleteTask,
+  deleteProjectTasks,
+  updateTask,
+  changeTaskStatus,
+  getTaskById
+}

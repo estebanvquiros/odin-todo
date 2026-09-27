@@ -49,4 +49,13 @@ function getProjectById(id) {
   return projects[id] || null;
 }
 
-export { createProject, getProjects, deleteProject, updateProject, getProjectName, getProjectById, initDefaultProject, getDefaultProject }
+export {
+  createProject,
+  getProjects,
+  deleteProject,
+  updateProject,
+  getProjectName,
+  getProjectById,
+  initDefaultProject,
+  getDefaultProject
+}

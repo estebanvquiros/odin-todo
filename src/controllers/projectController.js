@@ -1,17 +1,43 @@
-import { createProject, deleteProject, getDefaultProject, getProjectById, getProjects, initDefaultProject, updateProject } from "../services/projectService";
+import { setCurrentProjectId, getCurrentProjectId } from "../core/appState.js";
 import { deleteProjectTasks, getTasks } from "../services/taskService";
-import { closeProjectDialog, highlightProjectById, onAddProject, onCancelProject, onEditProject, onProjectDelete, onProjectSelection, onProjectSubmit, openEditProjectDialog, removeProjectItem, renderProject, renderProjects, setHeaderTitle, showProjectNameError, updateProjectItem } from "../views/projectView";
-import { renderTasks } from "../views/taskView";
+import {
+  createProject,
+  deleteProject,
+  getDefaultProject,
+  getProjectById,
+  getProjects,
+  initDefaultProject,
+  updateProject
+} from "../services/projectService";
+import {
+  onProjectSubmit,
+  onProjectDelete,
+  onProjectCancel,
+  openCreateProjectDialog,
+  openEditProjectDialog,
+  closeProjectDialog,
+  showProjectNameError
+} from "../views/project/projectDialogView.js";
+import { setHeaderTitle, onProjectEdit } from "../views/project/projectHeaderView.js";
+import {
+  onProjectAdd,
+  onProjectSelection,
+  renderProject,
+  renderProjects,
+  highlightProjectById,
+  updateProjectItem,
+  removeProjectItem
+} from "../views/project/projectListView.js";
+import { renderTasks } from "../views/task/taskListView";
 
-let currentProjectId = null;
-let editingProjectId = null;
+let isEditingProject = false;
 
 function initProjectController() {
-  onAddProject(handleAddProject);
+  onProjectAdd(handleAddProject);
   onProjectSubmit(handleProjectSubmit);
-  onCancelProject();
+  onProjectCancel();
   onProjectSelection(selectProject);
-  onEditProject(handleEditProject);
+  onProjectEdit(handleEditProject);
   onProjectDelete(handleDeleteProject);
 }
 
@@ -24,7 +50,8 @@ function loadProjects() {
 }
 
 function handleAddProject() {
-  editingProjectId = null;
+  isEditingProject = false;
+  openCreateProjectDialog();
 }
 
 function handleProjectSubmit(projectName) {
@@ -36,25 +63,28 @@ function handleProjectSubmit(projectName) {
     showProjectNameError("Project name must be less than 30 characters");
     return;
   }
-  if (editingProjectId) {
-    const updatedProject = updateProject(editingProjectId, projectName);
+  if (isEditingProject) {
+    const currentProjectId = getCurrentProjectId();
+    const updatedProject = updateProject(currentProjectId, projectName);
     if (!updatedProject) return;
     setHeaderTitle(projectName);
-    updateProjectItem(editingProjectId, projectName);
+    updateProjectItem(currentProjectId, projectName);
   } else {
     const newProject = createProject(projectName);
     renderProject(newProject);
   }
   closeProjectDialog();
-  editingProjectId = null;
+  isEditingProject = false;
 }
 
 function handleDeleteProject() {
-  const success = deleteProject(editingProjectId);
+  const currentProjectId = getCurrentProjectId();
+  if (!currentProjectId) return;
+  const success = deleteProject(currentProjectId);
   if (!success) return;
-  deleteProjectTasks(editingProjectId);
-  removeProjectItem(editingProjectId);
-  editingProjectId = null;
+  deleteProjectTasks(currentProjectId);
+  removeProjectItem(currentProjectId);
+  isEditingProject = false;
   let defaultProject = getDefaultProject();
   if (!defaultProject) {
     initDefaultProject();
@@ -66,7 +96,7 @@ function handleDeleteProject() {
 function selectProject(projectId) {
   const project = getProjectById(projectId);
   if (!project) return;
-  currentProjectId = projectId;
+  setCurrentProjectId(projectId);
   highlightProjectById(projectId);
   setHeaderTitle(project.name);
   const tasks = getTasks(projectId);
@@ -74,15 +104,11 @@ function selectProject(projectId) {
 }
 
 function handleEditProject() {
-  if (!currentProjectId) return;
-  const project = getProjectById(currentProjectId);
+  if (!getCurrentProjectId()) return;
+  const project = getProjectById(getCurrentProjectId());
   if (!project) return;
-  editingProjectId = project.id;
+  isEditingProject = true;
   openEditProjectDialog(project);
 }
 
-function getCurrentProjectId() {
-  return currentProjectId;
-}
-
-export { initProjectController, loadProjects, getCurrentProjectId }
+export { initProjectController, loadProjects }

@@ -1,18 +1,42 @@
 import { parseISO, isValid, differenceInCalendarDays } from "date-fns";
-import { changeTaskStatus, createTask, deleteTask, getTaskById, updateTask } from "../services/taskService";
-import { closeTaskDialog, onAddTask, onCancelTask, onDeleteTask, onTaskSelect, onTaskStatusChange, onTaskSubmit, openEditTaskDialog, removeTaskItem, renderTask, renderTasks, showTaskDescriptionError, showTaskTitleError, showTaskDueDateError, updateTaskItem } from "../views/taskView"
-import { getCurrentProjectId } from "./projectController";
-import { getProjectById, getProjects } from "../services/projectService";
+import { getCurrentProjectId } from "../core/appState.js";
+import { getProjectById, getProjects } from "../services/projectService.js";
+import {
+  changeTaskStatus,
+  createTask,
+  deleteTask,
+  getTaskById,
+  updateTask
+} from "../services/taskService";
+import {
+  onTaskSubmit,
+  onTaskDelete,
+  onTaskCancel,
+  openCreateTaskDialog,
+  openEditTaskDialog,
+  closeTaskDialog,
+  showTaskTitleError,
+  showTaskDescriptionError,
+  showTaskDueDateError
+} from "../views/task/taskDialogView.js";
+import {
+  onTaskAdd,
+  onTaskSelect,
+  onTaskStatusChange,
+  renderTask,
+  updateTaskItem,
+  removeTaskItem
+} from "../views/task/taskListView.js";
 
 let editingTaskId = null;
 
 function initTaskController() {
-  onAddTask(handleAddTask);
+  onTaskAdd(handleAddTask);
   onTaskSubmit(handleTaskSubmit);
-  onCancelTask();
+  onTaskCancel();
   onTaskStatusChange(handleTaskStatusChange);
   onTaskSelect(handleTaskSelect);
-  onDeleteTask(handleDeleteTask);
+  onTaskDelete(handleDeleteTask);
 }
 
 function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority, selectedProjectId) {
@@ -81,6 +105,7 @@ function handleDeleteTask() {
 
 function handleAddTask() {
   editingTaskId = null;
+  openCreateTaskDialog();
 }
 
 function handleTaskStatusChange(taskId, completed) {
