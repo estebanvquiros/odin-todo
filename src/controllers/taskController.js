@@ -6,6 +6,7 @@ import {
   createTask,
   deleteTask,
   getTaskById,
+  getTasks,
   updateTask
 } from "../services/taskService";
 import {
@@ -25,8 +26,10 @@ import {
   onTaskStatusChange,
   renderTask,
   updateTaskItem,
-  removeTaskItem
+  removeTaskItem,
+  renderTasks
 } from "../views/task/taskListView.js";
+import { subscribe } from "../core/eventBus.js";
 
 let editingTaskId = null;
 
@@ -37,6 +40,7 @@ function initTaskController() {
   onTaskStatusChange(handleTaskStatusChange);
   onTaskSelect(handleTaskSelect);
   onTaskDelete(handleDeleteTask);
+  subscribe("project-selected", loadTasks);
 }
 
 function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority, selectedProjectId) {
@@ -117,6 +121,12 @@ function handleTaskSelect(taskId) {
   if (!task) return;
   editingTaskId = taskId;
   openEditTaskDialog(task, getProjects());
+}
+
+function loadTasks(projectId) {
+  const tasks = getTasks(projectId);
+  if (!tasks) return;
+  renderTasks(tasks);
 }
 
 export { initTaskController }

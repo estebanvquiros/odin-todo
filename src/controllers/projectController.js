@@ -1,5 +1,5 @@
 import { setCurrentProjectId, getCurrentProjectId } from "../core/appState.js";
-import { deleteProjectTasks, getTasks } from "../services/taskService";
+import { deleteProjectTasks } from "../services/taskService";
 import {
   createProject,
   deleteProject,
@@ -28,7 +28,7 @@ import {
   updateProjectItem,
   removeProjectItem
 } from "../views/project/projectListView.js";
-import { renderTasks } from "../views/task/taskListView";
+import { publish } from "../core/eventBus.js";
 
 let isEditingProject = false;
 
@@ -99,8 +99,7 @@ function selectProject(projectId) {
   setCurrentProjectId(projectId);
   highlightProjectById(projectId);
   setHeaderTitle(project.name);
-  const tasks = getTasks(projectId);
-  renderTasks(tasks);
+  publish("project-selected", projectId);
 }
 
 function handleEditProject() {
