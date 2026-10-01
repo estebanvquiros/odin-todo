@@ -72,6 +72,7 @@ function handleProjectSubmit(projectName) {
   } else {
     const newProject = createProject(projectName);
     renderProject(newProject);
+    selectProject(newProject.id);
   }
   closeProjectDialog();
   isEditingProject = false;
