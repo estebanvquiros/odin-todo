@@ -14,19 +14,19 @@ function createTask(title, description, dueDate, priority, projectID) {
 function getTasks(projectId = null, filter = 'all', sort = "dueDate-asc") {
   let tasksArray = Object.values(tasks);
 
-  if (projectId) {
-    tasksArray = tasksArray.filter((task) => task.projectID === projectId);
-  }
+  tasksArray = filterTasksByProject(tasksArray, projectId);
+  tasksArray = filterTasksByStatus(tasksArray, filter);
+  tasksArray = sortTasksByDueDate(tasksArray, sort);
 
-  if (filter === "completed") {
-    tasksArray = tasksArray.filter((task) => task.completed === true);
-  }
+  return tasksArray;
+}
 
-  if (filter === "pending") {
-    tasksArray = tasksArray.filter((task) => task.completed === false);
-  }
-
+function sortTasksByDueDate(tasksArray, sort) {
   tasksArray.sort((a, b) => {
+    if (a.completed !== b.completed) {
+      return a.completed ? 1 : -1;
+    }
+
     if (!a.dueDate && !b.dueDate) return 0;
     if (!a.dueDate) return 1;
     if (!b.dueDate) return -1;
@@ -35,7 +35,24 @@ function getTasks(projectId = null, filter = 'all', sort = "dueDate-asc") {
 
     return (compareAsc(parseISO(a.dueDate), parseISO(b.dueDate)));
   });
+  return tasksArray;
+}
 
+function filterTasksByProject(tasksArray, projectId) {
+  if (projectId) {
+    return tasksArray.filter((task) => task.projectID === projectId);
+  }
+  return tasksArray;
+}
+
+function filterTasksByStatus(tasksArray, filter) {
+  if (filter === "completed") {
+    return tasksArray.filter((task) => task.completed === true);
+  }
+
+  if (filter === "pending") {
+    return tasksArray.filter((task) => task.completed === false);
+  }
   return tasksArray;
 }
 
