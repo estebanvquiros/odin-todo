@@ -2,6 +2,7 @@ import { formatDueDate } from "../../utils/dateUtils.js";
 
 const taskList = document.querySelector("#task-list");
 const addTaskBtn = document.querySelector("#add-task-btn");
+const taskFilter = document.querySelector("#task-filter");
 
 function onTaskAdd(handler) {
   addTaskBtn.addEventListener("click", () => {
@@ -24,8 +25,13 @@ function onTaskStatusChange(handler) {
     const taskItem = checkbox.closest(".task");
     if (!taskItem) return;
     handler(taskItem.dataset.taskId, checkbox.checked);
-    taskItem.classList.toggle("completed", checkbox.checked);
   });
+}
+
+function onTaskFilter(handler) {
+  taskFilter.addEventListener("change", () => {
+    handler(taskFilter.value);
+  })
 }
 
 function createTaskItem(task) {
@@ -97,6 +103,7 @@ function removeTaskItem(taskId) {
 export {
   onTaskAdd,
   onTaskSelect,
+  onTaskFilter,
   createTaskItem,
   renderTask,
   renderTasks,

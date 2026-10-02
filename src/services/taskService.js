@@ -10,12 +10,22 @@ function createTask(title, description, dueDate, priority, projectID) {
   return newTask;
 }
 
-function getTasks(projectID = null) {
-  if (projectID) {
-    return Object.values(tasks).filter((task) => task.projectID === projectID);
-  } else {
-    return Object.values(tasks);
+function getTasks(projectId = null, filter = 'all') {
+  let tasksArray = Object.values(tasks);
+
+  if (projectId) {
+    tasksArray = tasksArray.filter((task) => task.projectID === projectId);
   }
+
+  if (filter === "completed") {
+    tasksArray = tasksArray.filter((task) => task.completed === true);
+  }
+
+  if (filter === "pending") {
+    tasksArray = tasksArray.filter((task) => task.completed === false);
+  }
+
+  return tasksArray;
 }
 
 function deleteTask(id) {

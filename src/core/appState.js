@@ -1,4 +1,5 @@
 let currentProjectId = null;
+let currentFilter = "all";
 
 function setCurrentProjectId(projectId) {
   currentProjectId = projectId;
@@ -8,4 +9,17 @@ function getCurrentProjectId() {
   return currentProjectId;
 }
 
-export { setCurrentProjectId, getCurrentProjectId }
+function setCurrentFilter(filter) {
+  currentFilter = filter;
+}
+
+function getCurrentFilter() {
+  return currentFilter;
+}
+
+export {
+  setCurrentProjectId,
+  getCurrentProjectId,
+  setCurrentFilter,
+  getCurrentFilter,
+}

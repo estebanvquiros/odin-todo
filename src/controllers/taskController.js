@@ -1,5 +1,5 @@
 import { parseISO, isValid, differenceInCalendarDays } from "date-fns";
-import { getCurrentProjectId } from "../core/appState.js";
+import { getCurrentFilter, getCurrentProjectId, setCurrentFilter } from "../core/appState.js";
 import { getProjectById, getProjects } from "../services/projectService.js";
 import {
   changeTaskStatus,
@@ -23,6 +23,7 @@ import {
 import {
   onTaskAdd,
   onTaskSelect,
+  onTaskFilter,
   onTaskStatusChange,
   renderTask,
   updateTaskItem,
@@ -40,7 +41,10 @@ function initTaskController() {
   onTaskStatusChange(handleTaskStatusChange);
   onTaskSelect(handleTaskSelect);
   onTaskDelete(handleDeleteTask);
-  subscribe("project-selected", loadTasks);
+  onTaskFilter(handleFilterTasks);
+  subscribe("project-selected", (projectId) => {
+    loadTasks(projectId, getCurrentFilter());
+  });
 }
 
 function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority, selectedProjectId) {
@@ -114,6 +118,7 @@ function handleAddTask() {
 
 function handleTaskStatusChange(taskId, completed) {
   changeTaskStatus(taskId, completed);
+  loadTasks(getCurrentProjectId(), getCurrentFilter());
 }
 
 function handleTaskSelect(taskId) {
@@ -123,8 +128,14 @@ function handleTaskSelect(taskId) {
   openEditTaskDialog(task, getProjects());
 }
 
-function loadTasks(projectId) {
-  const tasks = getTasks(projectId);
+function handleFilterTasks(filter) {
+  if (!["all", "pending", "completed"].includes(filter)) return;
+  setCurrentFilter(filter);
+  loadTasks(getCurrentProjectId(), filter);
+}
+
+function loadTasks(projectId, filter) {
+  const tasks = getTasks(projectId, filter);
   if (!tasks) return;
   renderTasks(tasks);
 }
