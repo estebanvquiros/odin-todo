@@ -1,3 +1,4 @@
+import { compareAsc, compareDesc, parseISO } from "date-fns";
 import { readTasks, writeTasks } from "../dao/taskDAO";
 import Task from "../models/Task";
 
@@ -10,7 +11,7 @@ function createTask(title, description, dueDate, priority, projectID) {
   return newTask;
 }
 
-function getTasks(projectId = null, filter = 'all') {
+function getTasks(projectId = null, filter = 'all', sort = "dueDate-asc") {
   let tasksArray = Object.values(tasks);
 
   if (projectId) {
@@ -24,6 +25,16 @@ function getTasks(projectId = null, filter = 'all') {
   if (filter === "pending") {
     tasksArray = tasksArray.filter((task) => task.completed === false);
   }
+
+  tasksArray.sort((a, b) => {
+    if (!a.dueDate && !b.dueDate) return 0;
+    if (!a.dueDate) return 1;
+    if (!b.dueDate) return -1;
+
+    if (sort === "dueDate-desc") return (compareDesc(parseISO(a.dueDate), parseISO(b.dueDate)));
+
+    return (compareAsc(parseISO(a.dueDate), parseISO(b.dueDate)));
+  });
 
   return tasksArray;
 }

@@ -3,6 +3,7 @@ import { formatDueDate } from "../../utils/dateUtils.js";
 const taskList = document.querySelector("#task-list");
 const addTaskBtn = document.querySelector("#add-task-btn");
 const taskFilter = document.querySelector("#task-filter");
+const taskSort = document.querySelector("#task-sort");
 
 function onTaskAdd(handler) {
   addTaskBtn.addEventListener("click", () => {
@@ -32,6 +33,13 @@ function onTaskFilter(handler) {
   taskFilter.addEventListener("change", () => {
     handler(taskFilter.value);
   })
+}
+
+function onTaskSort(handler) {
+  taskSort.addEventListener("change", () => {
+    handler(taskSort.value);
+  })
+
 }
 
 function createTaskItem(task) {
@@ -109,5 +117,6 @@ export {
   renderTasks,
   onTaskStatusChange,
   updateTaskItem,
-  removeTaskItem
+  removeTaskItem,
+  onTaskSort,
 }

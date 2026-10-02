@@ -1,5 +1,5 @@
 import { parseISO, isValid, differenceInCalendarDays } from "date-fns";
-import { getCurrentFilter, getCurrentProjectId, setCurrentFilter } from "../core/appState.js";
+import { getCurrentFilter, getCurrentProjectId, getCurrentSort, setCurrentFilter, setCurrentSort } from "../core/appState.js";
 import { getProjectById, getProjects } from "../services/projectService.js";
 import {
   changeTaskStatus,
@@ -28,7 +28,8 @@ import {
   renderTask,
   updateTaskItem,
   removeTaskItem,
-  renderTasks
+  renderTasks,
+  onTaskSort
 } from "../views/task/taskListView.js";
 import { subscribe } from "../core/eventBus.js";
 
@@ -42,6 +43,7 @@ function initTaskController() {
   onTaskSelect(handleTaskSelect);
   onTaskDelete(handleDeleteTask);
   onTaskFilter(handleFilterTasks);
+  onTaskSort(handleSortTasks);
   subscribe("project-selected", (projectId) => {
     loadTasks(projectId, getCurrentFilter());
   });
@@ -57,14 +59,11 @@ function handleTaskSubmit(taskTitle, taskDescription, taskDueDate, taskPriority,
     if (!getProjectById(selectedProjectId)) return;
     const updatedTask = updateTask(editingTaskId, taskTitle, taskDescription, taskDueDate, taskPriority, selectedProjectId);
     if (!updatedTask) return;
-    if (currentProjectId === selectedProjectId) {
-      updateTaskItem(updatedTask);
-    } else {
-      removeTaskItem(editingTaskId);
-    }
+    loadTasks(getCurrentProjectId(), getCurrentFilter(), getCurrentSort());
   } else {
     const newTask = createTask(taskTitle, taskDescription, taskDueDate, taskPriority, currentProjectId);
-    renderTask(newTask);
+    if (!newTask) return;
+    loadTasks(getCurrentProjectId(), getCurrentFilter(), getCurrentSort());
   }
   editingTaskId = null;
   closeTaskDialog()
@@ -118,7 +117,7 @@ function handleAddTask() {
 
 function handleTaskStatusChange(taskId, completed) {
   changeTaskStatus(taskId, completed);
-  loadTasks(getCurrentProjectId(), getCurrentFilter());
+  loadTasks(getCurrentProjectId(), getCurrentFilter(), getCurrentSort());
 }
 
 function handleTaskSelect(taskId) {
@@ -131,11 +130,17 @@ function handleTaskSelect(taskId) {
 function handleFilterTasks(filter) {
   if (!["all", "pending", "completed"].includes(filter)) return;
   setCurrentFilter(filter);
-  loadTasks(getCurrentProjectId(), filter);
+  loadTasks(getCurrentProjectId(), filter, getCurrentSort());
 }
 
-function loadTasks(projectId, filter) {
-  const tasks = getTasks(projectId, filter);
+function handleSortTasks(sort) {
+  if (!["dueDate-asc", "dueDate-desc"].includes(sort)) return;
+  setCurrentSort(sort);
+  loadTasks(getCurrentProjectId(), getCurrentFilter(), sort);
+}
+
+function loadTasks(projectId, filter, sort) {
+  const tasks = getTasks(projectId, filter, sort);
   if (!tasks) return;
   renderTasks(tasks);
 }
