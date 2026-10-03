@@ -11,7 +11,7 @@ function createTask(title, description, dueDate, priority, projectID) {
   return newTask;
 }
 
-function getTasks(projectId = null, filter = 'all', sort = { criteria: "dueDate", direction: "asc" }) {
+function getTasks(projectId = null, filter = 'pending', sort = { criteria: "dueDate", direction: "asc" }) {
   let tasksArray = Object.values(tasks);
 
   tasksArray = filterTasksByProject(tasksArray, projectId);

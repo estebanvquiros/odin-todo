@@ -1,5 +1,5 @@
 let currentProjectId = null;
-let currentFilter = "all";
+let currentFilter = "pending";
 let currentSort = { criteria: "dueDate", direction: "asc" };
 
 function setCurrentProjectId(projectId) {
