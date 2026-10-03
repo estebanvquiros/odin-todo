@@ -1,6 +1,6 @@
 let currentProjectId = null;
 let currentFilter = "all";
-let currentSort = "dueDate-asc";
+let currentSort = { criteria: "dueDate", direction: "asc" };
 
 function setCurrentProjectId(projectId) {
   currentProjectId = projectId;
@@ -18,8 +18,8 @@ function getCurrentFilter() {
   return currentFilter;
 }
 
-function setCurrentSort(sort) {
-  currentSort = sort;
+function setCurrentSort(criteria, direction) {
+  currentSort = { criteria, direction };
 }
 
 function getCurrentSort() {

@@ -45,7 +45,7 @@ function initTaskController() {
   onTaskFilter(handleFilterTasks);
   onTaskSort(handleSortTasks);
   subscribe("project-selected", (projectId) => {
-    loadTasks(projectId, getCurrentFilter());
+    loadTasks(projectId, getCurrentFilter(), getCurrentSort());
   });
 }
 
@@ -134,9 +134,10 @@ function handleFilterTasks(filter) {
 }
 
 function handleSortTasks(sort) {
-  if (!["dueDate-asc", "dueDate-desc"].includes(sort)) return;
-  setCurrentSort(sort);
-  loadTasks(getCurrentProjectId(), getCurrentFilter(), sort);
+  if (!["dueDate-asc", "dueDate-desc", "priority-asc", "priority-desc"].includes(sort)) return;
+  const [criteria, direction] = sort.split("-");
+  setCurrentSort(criteria, direction);
+  loadTasks(getCurrentProjectId(), getCurrentFilter(), getCurrentSort());
 }
 
 function loadTasks(projectId, filter, sort) {

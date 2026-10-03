@@ -11,18 +11,42 @@ function createTask(title, description, dueDate, priority, projectID) {
   return newTask;
 }
 
-function getTasks(projectId = null, filter = 'all', sort = "dueDate-asc") {
+function getTasks(projectId = null, filter = 'all', sort = { criteria: "dueDate", direction: "asc" }) {
   let tasksArray = Object.values(tasks);
 
   tasksArray = filterTasksByProject(tasksArray, projectId);
   tasksArray = filterTasksByStatus(tasksArray, filter);
-  tasksArray = sortTasksByDueDate(tasksArray, sort);
+
+  if (sort.criteria === "dueDate") {
+    tasksArray = sortTasksByDueDate(tasksArray, sort.direction);
+  } else if (sort.criteria === "priority") {
+    tasksArray = sortTasksByPriority(tasksArray, sort.direction);
+  }
 
   return tasksArray;
 }
 
-function sortTasksByDueDate(tasksArray, sort) {
-  tasksArray.sort((a, b) => {
+function sortTasksByPriority(tasksArray, direction) {
+  const priorityWeight = { Low: 0, Medium: 1, High: 2 };
+  return [...tasksArray].sort((a, b) => {
+    if (a.completed !== b.completed) {
+      return a.completed ? 1 : -1;
+    }
+
+    let priorityDifference = priorityWeight[a.priority] - priorityWeight[b.priority];
+    if (direction === "desc") priorityDifference = -priorityDifference;
+
+    if (priorityDifference !== 0) return priorityDifference;
+
+    if (!a.dueDate && !b.dueDate) return 0;
+    if (!a.dueDate) return 1;
+    if (!b.dueDate) return -1;
+    return (compareAsc(parseISO(a.dueDate), parseISO(b.dueDate)));
+  });
+}
+
+function sortTasksByDueDate(tasksArray, direction) {
+  return [...tasksArray].sort((a, b) => {
     if (a.completed !== b.completed) {
       return a.completed ? 1 : -1;
     }
@@ -30,12 +54,10 @@ function sortTasksByDueDate(tasksArray, sort) {
     if (!a.dueDate && !b.dueDate) return 0;
     if (!a.dueDate) return 1;
     if (!b.dueDate) return -1;
-
-    if (sort === "dueDate-desc") return (compareDesc(parseISO(a.dueDate), parseISO(b.dueDate)));
+    if (direction === "desc") return (compareDesc(parseISO(a.dueDate), parseISO(b.dueDate)));
 
     return (compareAsc(parseISO(a.dueDate), parseISO(b.dueDate)));
   });
-  return tasksArray;
 }
 
 function filterTasksByProject(tasksArray, projectId) {
@@ -48,9 +70,7 @@ function filterTasksByProject(tasksArray, projectId) {
 function filterTasksByStatus(tasksArray, filter) {
   if (filter === "completed") {
     return tasksArray.filter((task) => task.completed === true);
-  }
-
-  if (filter === "pending") {
+  } else if (filter === "pending") {
     return tasksArray.filter((task) => task.completed === false);
   }
   return tasksArray;
